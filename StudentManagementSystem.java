@@ -9,7 +9,7 @@ class StudentManagementSystem {
     static int[] batchNameArray = { 105, 106, 107, 108, 109, 110 };
     static int[] batchStatusArray = { 0, 0, 0, 0, 1, 1 };
     static int[] batchStudentCountArray = { 25, 25, 25, 25, 25, 25 };
-
+    
     // Student data
     static String[] regNoArray = {
             "PR24105001", "PR24105002", "PR24105003", "PR24105004", "PR24105005",
@@ -221,12 +221,12 @@ class StudentManagementSystem {
     public static void homePage() {
         do {
 			
-			drawBox("ICET Student Management System");
-			System.out.println("[1] Student Management");
-			System.out.println("\n[2] Batch Management ");
-			System.out.println("\n[3] Grade Management");
-			System.out.println("\n[4] Report Generator");
-			System.out.println("\n[5] Exit");
+			drawBox("ICET Student Management System : Home");
+			System.out.println("\t[1] Student Management");
+			System.out.println("\n\t[2] Batch Management ");
+			System.out.println("\n\t[3] Grade Management");
+			System.out.println("\n\t[4] Report Generator");
+			System.out.println("\n\t[5] Exit");
 
             int option = getOption();
 			
@@ -253,7 +253,7 @@ class StudentManagementSystem {
 						break;
 				}
 			}else{
-				if(isInvalidOption('e'))exit();
+				if(isInvalidOption('e',""))exit();
 				else clearConsole();
 			}
         } while (true);
@@ -265,30 +265,40 @@ class StudentManagementSystem {
 		do{
 			isContinue = true;
 			
-			drawBox("Student Management");
-			System.out.println("[1] Add Student");
-			System.out.println("\n[2] Update Student ");
-			System.out.println("\n[3] View Student Profile");
-			System.out.println("\n[4] Delete Student Profile");
-			System.out.println("\n[5] Exit");
+			drawBox("Home > Student Management");
+			System.out.println("\t[1] Add Student");
+			System.out.println("\n\t[2] Update Student ");
+			System.out.println("\n\t[3] View Student Profile");
+			System.out.println("\n\t[4] Delete Student Profile");
+			System.out.println("\n\t[5] Exit");
 			
             int option = getOption();
             
             if(option >= 1 && option <= 5){
 				switch(option){
 					case 1:
+						clearConsole();
+						addStudent();
 						break;
 					case 2:
+						clearConsole();
+						updateStudent();
 						break;
 					case 3:
+						clearConsole();
+						viewStudentProfile();
 						break;
 					case 4:
+						clearConsole();
+						deleteStudentProfile();
 						break;
 					case 5:
+						clearConsole();
+						isContinue = false;
 						break;
 				}
 			}else{
-				if(isInvalidOption('m')) {isContinue = false; clearConsole();}
+				if(isInvalidOption('m',"")) {isContinue = false; clearConsole();}
 				else clearConsole();
 			}
             
@@ -304,27 +314,35 @@ class StudentManagementSystem {
 		do{
 			isContinue = true;
 
-			drawBox("Batch Management");
-			System.out.println("[1] Add Batch");
-			System.out.println("\n[2] Update Batch ");
-			System.out.println("\n[3] View Batches");
-			System.out.println("\n[4] Exit");
+			drawBox("Home > Batch Management");
+			System.out.println("\t[1] Add Batch");
+			System.out.println("\n\t[2] Update Batch ");
+			System.out.println("\n\t[3] View Batches");
+			System.out.println("\n\t[4] Exit");
 			
 			int option = getOption();
 			
 			if(option >= 1 && option <= 4){
 				switch(option){
 					case 1:
+						clearConsole();
+						addBatch();
 						break;
 					case 2:
+						clearConsole();
+						updateBatch();
 						break;
 					case 3:
+						clearConsole();
+						viewBatches();
 						break;
 					case 4:
+						clearConsole();
+						isContinue = false;
 						break;
 				}
 			}else{
-				if(isInvalidOption('m')){ isContinue = false; clearConsole();}
+				if(isInvalidOption('m',"")){ isContinue = false; clearConsole();}
 				else clearConsole();
 			}
 			
@@ -340,24 +358,30 @@ class StudentManagementSystem {
 		do{
 			isContinue = true;
 			
-			drawBox("Grade Management");
-			System.out.println("[1] PRF Marks Update");
-			System.out.println("\n[2] DBMS Marks Update ");
-			System.out.println("\n[3] Exit");
+			drawBox("Home > Grade Management");
+			System.out.println("\t[1] PRF Marks Update");
+			System.out.println("\n\t[2] DBMS Marks Update ");
+			System.out.println("\n\t[3] Exit");
 			
 			int option = getOption();
 			
 			if(option >= 1 && option <= 3){
 				switch(option){
 					case 1:
+						clearConsole();
+						prfMarksUpdate();
 						break;
 					case 2:
+						clearConsole();
+						dbmsMakrsUpdate();
 						break;
 					case 3:
+						clearConsole();
+						isContinue = false;
 						break;
 				}
 			}else{
-				if(isInvalidOption('m')){ isContinue = false; clearConsole();}
+				if(isInvalidOption('m',"")){ isContinue = false; clearConsole();}
 				else clearConsole();
 			}
 			
@@ -374,10 +398,10 @@ class StudentManagementSystem {
 			isContinue = true;
 			
 			drawBox("Report Generator");
-			System.out.println("[1] Batch Summary");
-			System.out.println("[2] Module Reports ");
-			System.out.println("[3] Batch Report");
-			System.out.println("[4] Exit");
+			System.out.println("\t[1] Batch Summary");
+			System.out.println("\t[2] Module Reports ");
+			System.out.println("\t[3] Batch Report");
+			System.out.println("\t[4] Exit");
 			
 			int option = getOption();
 			
@@ -393,13 +417,278 @@ class StudentManagementSystem {
 						break;
 				}
 			}else{
-				if(isInvalidOption('m')){isContinue = false; clearConsole();}
+				if(isInvalidOption('m',"")){isContinue = false; clearConsole();}
 				else clearConsole();
 			}
         
 		}while(isContinue);
 
     }
+    
+    
+    ///////////////////////////////  STUDENT MANAGEMENT ///////////////////////////////////////
+    
+    // Add student
+    public static void addStudent(){
+		Scanner scanner = new Scanner(System.in);
+		
+		boolean isContinue = false;
+		do{
+			isContinue = true;
+			
+			drawBox("Home > Student Management > Add Student");
+			System.out.print("Enter Batch Number (Students should be added) : ");
+			int batchName = scanner.nextInt();
+			
+			int batchIndex = findIndexInArray(batchNameArray,batchName);
+			if(batchIndex != -1){
+				int batchStatus = findValueInArray(batchStatusArray,batchIndex);
+				if(batchStatus == 1){
+					//////
+					//int temp = scanner.nextInt();
+				}else{
+					if(isInvalidOption('t',"\tStudents cannot be added to this batch because enrollment is closed.\nDo you want to add student to another Batch (Y/N):")) clearConsole();
+					else{ isContinue = false; clearConsole();}
+				}
+			}else{
+				if(isInvalidOption('t',"\tBatch number does not exist\nDo you want to enter again (Y/N) : ")) clearConsole();
+				else {isContinue = false; clearConsole();}
+			}
+			
+			//int temp = scanner.nextInt();
+			
+		}while(isContinue);
+	}
+	
+	// update students
+	public static void updateStudent(){
+		Scanner scanner = new Scanner(System.in);
+		boolean isContinue = false;
+		do{
+			isContinue = true;
+			
+			drawBox("Home > Student Management > Update Student");
+			System.out.print("Enter Student Registration No : ");
+			String regNumber = scanner.next();
+			
+			int regNoIndex = findIndexInArray(regNoArray,regNumber);
+			if(regNoIndex != -1){
+				/////
+				int temp = scanner.nextInt();
+			}else{
+				if(isInvalidOption('t',"\tThis student not exist in the system.\nDo you want to enter again (Y/N) : ")) clearConsole();
+				else {isContinue = false; clearConsole();}
+			}
+		}while(isContinue);
+	}
+	
+	// view student profile
+	public static void viewStudentProfile(){
+		Scanner scanner = new Scanner(System.in);
+		boolean isContinue = false;
+		do{
+			isContinue = true;
+			
+			drawBox("Home > Student Management > View Student Profile");
+			System.out.print("Enter Student Registration No : ");
+			String regNumber = scanner.next();
+			
+			int regNoIndex = findIndexInArray(regNoArray,regNumber);
+			if(regNoIndex != -1){
+				/////
+				int temp = scanner.nextInt();
+			}else{
+				if(isInvalidOption('t',"\tThis student does not exist in the system.\nDo you want to enter again (Y/N) : ")) clearConsole();
+				else {isContinue = false; clearConsole();}
+			}
+		}while(isContinue);
+	}
+	
+	//Delete student profile
+	public static void deleteStudentProfile(){
+		Scanner scanner = new Scanner(System.in);
+		boolean isContinue = false;
+		do{
+			isContinue = true;
+			
+			drawBox("Home > Student Management > Delete Student Profile");
+			System.out.print("Enter Student Registration No : ");
+			String regNumber = scanner.next();
+			
+			int regNoIndex = findIndexInArray(regNoArray,regNumber);
+			if(regNoIndex != -1){
+				/////
+				int temp = scanner.nextInt();
+			}else{
+				if(isInvalidOption('t',"\tThis student does not exist in the system.\nDo you want to enter again (Y/N) : ")) clearConsole();
+				else {isContinue = false; clearConsole();}
+			}
+			
+		}while(isContinue);
+	}
+    
+    
+    ///////////////////////////////  BATCH MANAGEMENT ///////////////////////////////////////
+    
+    // Add batch
+    public static void addBatch(){
+		Scanner scanner = new Scanner(System.in);
+		boolean isContinue = false;
+		do{
+			isContinue = true;
+			
+			drawBox("Home > Batch Management > Add Student");
+			System.out.print("Enter Batch Number : ");
+			int batchNum = scanner.nextInt();
+			
+			int batchIndex = findIndexInArray(batchNameArray,batchNum);
+			if(batchIndex != -1){
+				if(isInvalidOption('t',"\tBatch is already added to the system.\nDo you want to add another batch to system (Y/N): ")) clearConsole();
+				else {isContinue = false; clearConsole();}
+			}else{
+				//////
+			}
+			
+		}while(isContinue);
+	}
+	
+	// update batch
+	public static void updateBatch(){
+		Scanner scanner = new Scanner(System.in);
+		boolean isContinue = false;
+		do{
+			isContinue = true;
+			
+			drawBox("Home > Batch Management > Update Studnent");
+			System.out.print("Enter Batch Number : ");
+			int batchNum = scanner.nextInt();
+			
+			int batchIndex = findIndexInArray(batchNameArray,batchNum);
+			if(batchIndex != -1){
+				/////
+			}else{
+				if(isInvalidOption('t',"\tThis batch does not exist in the system.\nDo you want to enter batch again (Y/N) : ")) clearConsole();
+				else {isContinue = false; clearConsole();}
+			}
+			
+			
+		}while(isContinue);
+	}
+	
+	// view batches
+	public static void viewBatches(){
+		Scanner scanner = new Scanner(System.in);
+		boolean isContinue = false;
+		String line = "----------------------------------------------------------------";
+		
+		do{
+			isContinue = true;
+			
+			drawBox("Home > Batch Management > View Batches");
+			
+			System.out.println(line);
+			System.out.printf("%-5S %-10S %-20s %-35s%n","No","Batch No","Student Count","Status");
+			System.out.println(line);
+			for (int i = 0; i < batchNameArray.length; i++)
+			{
+				System.out.printf("%-5d %-10d %-20d %-35s%n",i+1,batchNameArray[i],findNumberOfStudent(batchNameArray[i]),(batchStatusArray[i] == 0 ? "ECROLLMENT CLOSED" : "ENCROLLMENT OPEN" ));
+				System.out.println(line);
+			}
+			
+			
+			if(isInvalidOption('t',"Do you want to go to home page (Y/N) : ")) {isContinue = false; clearConsole();}
+			else clearConsole();
+		}while(isContinue);
+	}
+    
+    // find number of student in each batch
+    public static int findNumberOfStudent(int num){
+		int count = 0;
+		for (int i = 0; i < regNoArray.length; i++)
+		{
+			String batchNoStr = regNoArray[i].substring(4,7);
+			int batchNum = Integer.parseInt(batchNoStr);
+			if(batchNum == num) count++;
+			
+		}
+		return count;
+		
+	}
+    
+    /////////////////////////////// GRADE MANAGEMENT //////////////////////////////////////////
+    
+    // prf marks update
+    public static void prfMarksUpdate(){
+		Scanner scanner = new Scanner(System.in);
+		boolean isContinue = false;
+		do{
+			isContinue = true;
+			
+			drawBox("Home > Grade Management > PRF Marks Update");
+			System.out.print("Enter Student Registration No : ");
+			String regNumber = scanner.next();
+			
+			int regNoIndex = findIndexInArray(regNoArray,regNumber);
+			if(regNoIndex != -1){
+				/////
+				int temp = scanner.nextInt();
+			}else{
+				if(isInvalidOption('t',"\tThis student not exist in the system.\nDo you want to enter again (Y/N) : ")) clearConsole();
+				else {isContinue = false; clearConsole();}
+			}
+		}while(isContinue);
+	}
+	
+	// dbms makrs update
+	public static void dbmsMakrsUpdate(){
+		Scanner scanner = new Scanner(System.in);
+		boolean isContinue = false;
+		do{
+			isContinue = true;
+			
+			drawBox("Home > Grade Management > DBMS Marks Update");
+			System.out.print("Enter Student Registration No : ");
+			String regNumber = scanner.next();
+			
+			int regNoIndex = findIndexInArray(regNoArray,regNumber);
+			if(regNoIndex != -1){
+				/////
+				int temp = scanner.nextInt();
+			}else{
+				if(isInvalidOption('t',"\tThis student not exist in the system.\nDo you want to enter again (Y/N) : ")) clearConsole();
+				else {isContinue = false; clearConsole();}
+			}
+		}while(isContinue);
+	}
+	
+    
+    // find index in array of given value
+    public static int findIndexInArray(int[] array, int value){
+		int index = -1;
+		for (int i = 0; i < array.length; i++)
+		{
+			if(array[i] == value) index =  i;
+		}
+		return index;
+		
+	}
+	public static int findIndexInArray(String[] array, String value){
+		int index = -1;
+		for (int i = 0; i < array.length; i++)
+		{
+			if(array[i].equals(value)) index = i;
+		}
+		return index;
+		
+	}
+	
+	// find value in arrya of given index
+	public static int findValueInArray(int[] array, int index){
+		if(index >= 0 && index < array.length) return array[index];
+		else return -1;
+		
+	}
+    
     
     //get option from user
     public static int getOption(){
@@ -410,9 +699,9 @@ class StudentManagementSystem {
 	}
     
     // check invalid option
-    public static boolean isInvalidOption(char ch){
+    public static boolean isInvalidOption(char ch,String text){
 		Scanner scanner = new Scanner(System.in);
-		System.out.print((ch == 'e')? ("\tInvalid input.\nDo you want to exit(Y/N) : "):("\tInvalid input.\nDo you want go to main menu(Y/N) : "));
+		System.out.print((ch == 'e')? ("\tInvalid input.\nDo you want to exit(Y/N) : "):(ch == 'm')?("\tInvalid input.\nDo you want go to main menu(Y/N) : "):(text));
 		char answer = scanner.next().toLowerCase().charAt(0);
 		if(answer == 'y') return true;
 		return false;
@@ -426,11 +715,16 @@ class StudentManagementSystem {
         System.out.printf("|\t\t%-56s|%n",title);
         System.out.println("-------------------------------------------------------------------------\n");
 	}
+	
 
       
     // main method
     public static void main(String args[]) {
         homePage();
+       //System.out.println(findNumberOfStudent(107));
+       //String batchNoStr = nameArray[0].substring(4,7);
+		//int batchNum = Integer.parseInt(batchNoStr);
+		//System.out.println(batchNoStr);
     }
 
 }
