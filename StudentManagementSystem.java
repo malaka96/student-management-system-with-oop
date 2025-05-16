@@ -15,7 +15,7 @@ class StudentManagementSystem {
             "PR24105001", "PR24105002", "PR24105003", "PR24105004", "PR24105005",
             "PR24105006", "PR24105007", "PR24105008", "PR24105009", "PR24105010",
             "OR24105011", "OR24105012", "OR24105013", "OR24105014", "OR24105015",
-            "PR24105016", "PR24105017", "PR24105018", "OR24105019", "OR24105020",
+            "PR24105016", "PR24105017", "PR24105018", " OR24105019", "OR24105020",
             "PR24105021", "PR24105022", "OR24105023", "OR24105024", "PR24105025",
             "PR24106001", "PR24106002", "PR24106003", "PR24106004", "PR24106005",
             "PR24106006", "PR24106007", "PR24106008", "PR24106009", "PR24106010",
@@ -444,8 +444,38 @@ class StudentManagementSystem {
 			if(batchIndex != -1){
 				int batchStatus = findValueInArray(batchStatusArray,batchIndex);
 				if(batchStatus == 1){
-					//////
-					//int temp = scanner.nextInt();
+					
+					System.out.print("Enter Student Nic : ");
+					String nic = scanner.next();
+					
+					int checkNic = findIndexInArray(nicArray,nic);
+					if(checkNic == -1){
+						System.out.print("Enter Student Name : ");
+						String name = scanner.next();
+						                                
+						System.out.print("Enter Lecturer Mode (1 - PHYSICAL 0 - ONLINE) : ");
+						int lectureMode = scanner.nextInt();
+						
+						String generatedRegNo = generateRegistrationNumber(lectureMode,batchName);
+						nicArray = extendArray(nicArray,nic);
+						nameArray = extendArray(nameArray,name);
+						regNoArray = extendArray(regNoArray,generatedRegNo);
+						prfArray = extendArray(prfArray,-2);
+						dbmsArray = extendArray(dbmsArray,-2);
+						
+						
+						System.out.println("\tStudent Registration No - "+generatedRegNo);
+						
+						if(isInvalidOption('t',"\tStudent was successfully added to the system.\nDo you want to add another student (Y/N) : "))clearConsole();
+						else {isContinue = false; clearConsole();}
+						
+						
+					}else{
+						if(isInvalidOption('t',"\t Nic already exist.\nDo you want to try again (Y/N) : ")) clearConsole();
+						else {isContinue = false; clearConsole();}
+					}
+					
+					
 				}else{
 					if(isInvalidOption('t',"\tStudents cannot be added to this batch because enrollment is closed.\nDo you want to add student to another Batch (Y/N):")) clearConsole();
 					else{ isContinue = false; clearConsole();}
@@ -470,11 +500,46 @@ class StudentManagementSystem {
 			drawBox("Home > Student Management > Update Student");
 			System.out.print("Enter Student Registration No : ");
 			String regNumber = scanner.next();
-			
+
 			int regNoIndex = findIndexInArray(regNoArray,regNumber);
 			if(regNoIndex != -1){
-				/////
-				int temp = scanner.nextInt();
+				
+				System.out.println("\tStudent Name : "+findValueInArray(nameArray,regNoIndex));
+				System.out.println("\tStudent Nic : "+findValueInArray(nicArray,regNoIndex));
+				
+				System.out.print("What do you want to update ? \n\t(01) Student Name\n\t(01) Student Nic\n\nEnter an option : ");
+				int option = scanner.nextInt();
+				switch(option){
+						case 1:
+							System.out.println("\tRegistration No : "+regNumber);
+							System.out.println("\tStudent Nic : "+findValueInArray(nicArray,regNoIndex));
+							System.out.println("\tStudnet Current Name : "+findValueInArray(nameArray,regNoIndex));
+							System.out.println();
+							
+							System.out.print("Enter Student Name to Update : ");
+							String name = scanner.next();
+							updateArrayValue(nameArray,regNoIndex,name);
+							
+							System.out.println(Arrays.toString(nameArray));
+							if(isInvalidOption('t',"\tStudent name was successfully added to the system.\nDo you want to add another student (Y/N) : "))clearConsole();
+							else {isContinue = false; clearConsole();}
+							
+							break;
+						case 2:
+							System.out.println("\tRegistration No : "+regNumber);
+							System.out.println("\tStudnet Name : "+findValueInArray(nameArray,regNoIndex));
+							System.out.println("\tStudent Current Nic : "+findValueInArray(nicArray,regNoIndex));
+							System.out.println();
+							
+							System.out.print("Enter Student nic to Update : ");
+							String nic = scanner.next();
+							updateArrayValue(nicArray,regNoIndex,nic);
+							
+							System.out.println(Arrays.toString(nameArray));
+							if(isInvalidOption('t',"\tStudent name was successfully added to the system.\nDo you want to add another student (Y/N) : "))clearConsole();
+							else {isContinue = false; clearConsole();}
+							break;
+				}
 			}else{
 				if(isInvalidOption('t',"\tThis student not exist in the system.\nDo you want to enter again (Y/N) : ")) clearConsole();
 				else {isContinue = false; clearConsole();}
@@ -495,8 +560,16 @@ class StudentManagementSystem {
 			
 			int regNoIndex = findIndexInArray(regNoArray,regNumber);
 			if(regNoIndex != -1){
-				/////
-				int temp = scanner.nextInt();
+				System.out.println("\tRegistration No : "+regNumber);
+				System.out.println("\tStudent Name : "+nameArray[regNoIndex]);
+				System.out.println("\tStudent Nic : "+nicArray[regNoIndex]);
+				System.out.println("\tStudent PRF Marks : "+prfArray[regNoIndex]);
+				System.out.println("\tStudent DBMS Marks : "+dbmsArray[regNoIndex]);
+				System.out.println("\tStudent GPA : ");
+				
+				if(isInvalidOption('t',"Do you want to search another student details (Y/N) : "))clearConsole();
+				else {isContinue = false; clearConsole();}
+						
 			}else{
 				if(isInvalidOption('t',"\tThis student does not exist in the system.\nDo you want to enter again (Y/N) : ")) clearConsole();
 				else {isContinue = false; clearConsole();}
@@ -517,14 +590,40 @@ class StudentManagementSystem {
 			
 			int regNoIndex = findIndexInArray(regNoArray,regNumber);
 			if(regNoIndex != -1){
-				/////
-				int temp = scanner.nextInt();
+				System.out.println("\tRegistration No : "+regNumber);
+				System.out.println("\tStudent Name : "+nameArray[regNoIndex]);
+				System.out.println("\tStudent Nic : "+nicArray[regNoIndex]);
+				System.out.println("\tStudent PRF Marks : "+prfArray[regNoIndex]);
+				System.out.println("\tStudent DBMS Marks : "+dbmsArray[regNoIndex]);
+				System.out.println("\tStudent GPA : ");
+				
+				if(isInvalidOption('t',"Do you want to delete this student profile (Y/N) : ")){
+					
+					regNoArray = shrinkArray(regNoArray,regNoIndex);
+					nameArray = shrinkArray(nameArray,regNoIndex);
+					nicArray = shrinkArray(nicArray,regNoIndex);
+					prfArray = shrinkArray(prfArray,regNoIndex);
+					dbmsArray = shrinkArray(dbmsArray,regNoIndex);
+					
+					if(isInvalidOption('t',"\tStudent was successfully deleted from the system.\nDo you want to delete another student profile (Y/N) : ")) clearConsole();
+					else {isContinue = false; clearConsole();}
+					
+				}
+				else {isContinue = false; clearConsole();}
+				
 			}else{
 				if(isInvalidOption('t',"\tThis student does not exist in the system.\nDo you want to enter again (Y/N) : ")) clearConsole();
 				else {isContinue = false; clearConsole();}
 			}
 			
 		}while(isContinue);
+	}
+	
+    
+    //generate registration number
+    public static String generateRegistrationNumber(int lectureMode,int batchNo){
+		String regNumber = String.format("%s24%d%03d",lectureMode == 1 ? "PR" : "OR",batchNo,(findNumberOfStudent(batchNo))+1);
+		return regNumber;
 	}
     
     
@@ -546,7 +645,17 @@ class StudentManagementSystem {
 				if(isInvalidOption('t',"\tBatch is already added to the system.\nDo you want to add another batch to system (Y/N): ")) clearConsole();
 				else {isContinue = false; clearConsole();}
 			}else{
-				//////
+				if(batchNum > 104){
+					batchNameArray = extendArray(batchNameArray,batchNum);
+					batchStatusArray = extendArray(batchStatusArray,1);
+					
+					if(isInvalidOption('t',"\tBatch was successfully added to the system.\nDo you want to add another batch to system (Y/N): ")) clearConsole();
+					else {isContinue = false; clearConsole();}
+					
+				}else{
+					if(isInvalidOption('t',"\tInvalid Option. The batch must be greater than 100.\nDo you want to add another batch to system (Y/N): ")) clearConsole();
+					else {isContinue = false; clearConsole();}
+				}
 			}
 			
 		}while(isContinue);
@@ -565,7 +674,13 @@ class StudentManagementSystem {
 			
 			int batchIndex = findIndexInArray(batchNameArray,batchNum);
 			if(batchIndex != -1){
-				/////
+				
+				if(isInvalidOption('t',"\tCurrent Status : " + (findValueInArray(batchStatusArray,batchIndex) == 1 ? "ENCROLLMENT OPEN" : "ENCROLLMENT CLOSED")+"\nDo you want to change it to "+(findValueInArray(batchStatusArray,batchIndex) == 0 ? "ENCROLLMENT OPEN" : "ENCROLLMENT CLOSED")+" (Y/N) : ")){
+					updateArrayValue(batchStatusArray,batchIndex,(findValueInArray(batchStatusArray,batchIndex) == 1 ? 0 : 1));
+					if(isInvalidOption('t',"\tBatch was successfully updated.\nDo you want to add another batch to system (Y/N): ")) clearConsole();
+					else {isContinue = false; clearConsole();}
+				}else {isContinue = false; clearConsole();}
+				
 			}else{
 				if(isInvalidOption('t',"\tThis batch does not exist in the system.\nDo you want to enter batch again (Y/N) : ")) clearConsole();
 				else {isContinue = false; clearConsole();}
@@ -601,19 +716,6 @@ class StudentManagementSystem {
 		}while(isContinue);
 	}
     
-    // find number of student in each batch
-    public static int findNumberOfStudent(int num){
-		int count = 0;
-		for (int i = 0; i < regNoArray.length; i++)
-		{
-			String batchNoStr = regNoArray[i].substring(4,7);
-			int batchNum = Integer.parseInt(batchNoStr);
-			if(batchNum == num) count++;
-			
-		}
-		return count;
-		
-	}
     
     /////////////////////////////// GRADE MANAGEMENT //////////////////////////////////////////
     
@@ -630,8 +732,36 @@ class StudentManagementSystem {
 			
 			int regNoIndex = findIndexInArray(regNoArray,regNumber);
 			if(regNoIndex != -1){
-				/////
-				int temp = scanner.nextInt();
+				System.out.println("\tStudent Name : "+nameArray[regNoIndex]);
+				System.out.println("\tStudent Nic : "+nicArray[regNoIndex]);
+				
+				if(prfArray[regNoIndex] > -1){
+					if(isInvalidOption('t',"This student has already completed the PRF module.\n\t PRF Marks : "+prfArray[regNoIndex]+"\nDo you want to update PRF Marks (Y/N) : ")){
+						
+						System.out.print("\tEnter PRF Makrs : ");
+						updateArrayValue(prfArray,regNoIndex,scanner.nextInt());
+						
+						if(isInvalidOption('t',"\tMarks were successfully updated.\nDo you want to update another student marks (Y/N): ")) clearConsole();
+						else {isContinue = false; clearConsole();}
+						
+					}else {isContinue = false; clearConsole();}
+					
+				}else if(prfArray[regNoIndex] == -2){
+						System.out.print("\tEnter PRF Makrs : ");
+						updateArrayValue(prfArray,regNoIndex,scanner.nextInt());
+						
+						if(isInvalidOption('t',"\tMarks were successfully updated.\nDo you want to update another student marks (Y/N): ")) clearConsole();
+						else {isContinue = false; clearConsole();}
+				}else{
+					System.out.println("This student was absent from the exam. You can update the narks if they participate in it...");
+					System.out.print("\tEnter PRF Makrs : ");
+					updateArrayValue(prfArray,regNoIndex,scanner.nextInt());
+						
+					if(isInvalidOption('t',"\tMarks were successfully updated.\nDo you want to update another student marks (Y/N): ")) clearConsole();
+					else {isContinue = false; clearConsole();}
+					
+				}
+				
 			}else{
 				if(isInvalidOption('t',"\tThis student not exist in the system.\nDo you want to enter again (Y/N) : ")) clearConsole();
 				else {isContinue = false; clearConsole();}
@@ -652,8 +782,35 @@ class StudentManagementSystem {
 			
 			int regNoIndex = findIndexInArray(regNoArray,regNumber);
 			if(regNoIndex != -1){
-				/////
-				int temp = scanner.nextInt();
+				System.out.println("\tStudent Name : "+nameArray[regNoIndex]);
+				System.out.println("\tStudent Nic : "+nicArray[regNoIndex]);
+				
+				if(dbmsArray[regNoIndex] > -1){
+					if(isInvalidOption('t',"This student has already completed the DBMS module.\n\t DBMS Marks : "+dbmsArray[regNoIndex]+"\nDo you want to update DBMS Marks (Y/N) : ")){
+						
+						System.out.print("\tEnter DBMS Makrs : ");
+						updateArrayValue(dbmsArray,regNoIndex,scanner.nextInt());
+						
+						if(isInvalidOption('t',"\tMarks were successfully updated.\nDo you want to update another student marks (Y/N): ")) clearConsole();
+						else {isContinue = false; clearConsole();}
+						
+					}else {isContinue = false; clearConsole();}
+					
+				}else if(dbmsArray[regNoIndex] == -2){
+						System.out.print("\tEnter DBMS Makrs : ");
+						updateArrayValue(dbmsArray,regNoIndex,scanner.nextInt());
+						
+						if(isInvalidOption('t',"\tMarks were successfully updated.\nDo you want to update another student marks (Y/N): ")) clearConsole();
+						else {isContinue = false; clearConsole();}
+				}else{
+					System.out.println("This student was absent from the exam. You can update the narks if they participate in it...");
+					System.out.print("\tEnter DBMS Makrs : ");
+					updateArrayValue(dbmsArray,regNoIndex,scanner.nextInt());
+						
+					if(isInvalidOption('t',"\tMarks were successfully updated.\nDo you want to update another student marks (Y/N): ")) clearConsole();
+					else {isContinue = false; clearConsole();}
+					
+				}
 			}else{
 				if(isInvalidOption('t',"\tThis student not exist in the system.\nDo you want to enter again (Y/N) : ")) clearConsole();
 				else {isContinue = false; clearConsole();}
@@ -661,6 +818,13 @@ class StudentManagementSystem {
 		}while(isContinue);
 	}
 	
+	// update array value
+	public static void updateArrayValue(String[] array,int index, String value){
+		array[index] = value;
+	}
+	public static void updateArrayValue(int[] array,int index, int value){
+		array[index] = value;
+	}
     
     // find index in array of given value
     public static int findIndexInArray(int[] array, int value){
@@ -670,7 +834,6 @@ class StudentManagementSystem {
 			if(array[i] == value) index =  i;
 		}
 		return index;
-		
 	}
 	public static int findIndexInArray(String[] array, String value){
 		int index = -1;
@@ -679,16 +842,73 @@ class StudentManagementSystem {
 			if(array[i].equals(value)) index = i;
 		}
 		return index;
-		
 	}
 	
 	// find value in arrya of given index
 	public static int findValueInArray(int[] array, int index){
 		if(index >= 0 && index < array.length) return array[index];
 		else return -1;
+	}
+	
+	public static String findValueInArray(String[] array, int index){
+		if(index >= 0 && index < array.length) return array[index];
+		else return "";
+	}
+	
+	// find number of student in each batch
+    public static int findNumberOfStudent(int num){
+		int count = 0;
+		for (int i = 0; i < regNoArray.length; i++)
+		{
+			String batchNoStr = regNoArray[i].substring(4,7);
+			int batchNum = Integer.parseInt(batchNoStr);
+			if(batchNum == num) count++;
+			
+		}
+		return count;
 		
 	}
-    
+	
+    //extend arrays
+    public static String[] extendArray(String[] array, String newValue){
+		String[] tempArray = new String[array.length+1];
+		for (int i = 0; i < array.length; i++)
+		{
+			tempArray[i] = array[i];
+		}
+		tempArray[tempArray.length - 1] = newValue;
+		
+		return tempArray;
+	}
+	
+	public static int[] extendArray(int[] array, int newValue){
+		int[] tempArray = new int[array.length+1];
+		for (int i = 0; i < array.length; i++)
+		{
+			tempArray[i] = array[i];
+		}
+		tempArray[tempArray.length -1] = newValue;
+		return tempArray;
+		
+	}
+	
+	// shrink array
+	public static int[] shrinkArray(int[] array, int index){
+		int[] tempArray = new int[array.length - 1 ];
+		for (int i = 0,j= 0; i < array.length; i++)
+		{
+			if(i != index) tempArray[j++] = array[i];
+		}
+		return tempArray;
+	}
+	public static String[] shrinkArray(String[] array, int index){
+		String[] tempArray = new String[array.length - 1];
+		for (int i = 0,j=0; i < array.length; i++)
+		{
+			if(i != index) tempArray[j++] = array[i];
+		}
+		return tempArray;
+	}
     
     //get option from user
     public static int getOption(){
@@ -721,10 +941,7 @@ class StudentManagementSystem {
     // main method
     public static void main(String args[]) {
         homePage();
-       //System.out.println(findNumberOfStudent(107));
-       //String batchNoStr = nameArray[0].substring(4,7);
-		//int batchNum = Integer.parseInt(batchNoStr);
-		//System.out.println(batchNoStr);
+       //System.out.printf("%d",4);
     }
 
 }
