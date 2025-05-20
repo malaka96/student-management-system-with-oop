@@ -15,7 +15,7 @@ class StudentManagementSystem {
             "PR24105001", "PR24105002", "PR24105003", "PR24105004", "PR24105005",
             "PR24105006", "PR24105007", "PR24105008", "PR24105009", "PR24105010",
             "OR24105011", "OR24105012", "OR24105013", "OR24105014", "OR24105015",
-            "PR24105016", "PR24105017", "PR24105018", " OR24105019", "OR24105020",
+            "PR24105016", "PR24105017", "PR24105018", "OR24105019", "OR24105020",
             "PR24105021", "PR24105022", "OR24105023", "OR24105024", "PR24105025",
             "PR24106001", "PR24106002", "PR24106003", "PR24106004", "PR24106005",
             "PR24106006", "PR24106007", "PR24106008", "PR24106009", "PR24106010",
@@ -397,10 +397,10 @@ class StudentManagementSystem {
 		do{
 			isContinue = true;
 			
-			drawBox("Report Generator");
-			System.out.println("\t[1] Batch Summary");
-			System.out.println("\t[2] Module Reports ");
-			System.out.println("\t[3] Batch Report");
+			drawBox("Home > Report Generator");
+			System.out.println("\t[1] Student Registration Report");
+			System.out.println("\t[2] Batch — wise Student Report");
+			System.out.println("\t[3] Industry Training Eligibility Report");
 			System.out.println("\t[4] Exit");
 			
 			int option = getOption();
@@ -408,12 +408,18 @@ class StudentManagementSystem {
 			if(option >= 1 && option <= 4){
 				switch(option){
 					case 1:
+						clearConsole();
+						studentRegistrationReport();
 						break;
 					case 2:
+						clearConsole();
+						batchWiseStudentReport();
 						break;
 					case 3:
 						break;
 					case 4:
+						clearConsole();
+						isContinue = false;
 						break;
 				}
 			}else{
@@ -817,6 +823,94 @@ class StudentManagementSystem {
 			}
 		}while(isContinue);
 	}
+	
+	//////////////////////////////////// REPORT MANAGEMENT ////////////////////////////////////
+	
+	// student registration report
+	public static void studentRegistrationReport(){
+		Scanner scanner = new Scanner(System.in);
+		boolean isContinue = false;
+		String line = "---------------------------------------------------------------------------------------------------------------------------------------------------";
+		do{
+			isContinue = true;
+			
+			drawBox("Home > Report Management > Student Registration Report");
+			System.out.println();
+			
+			System.out.println(line);
+			System.out.printf("%-10s %-25s %-25s %-20s %-20s %-20s %-20s%n","No","Registration No","Student Name","NIC","PRF Marks","DBMS Marks","GPA");
+			System.out.println(line);
+			
+			for (int i = 0; i < nameArray.length; i++)
+			{
+				System.out.printf("%-10d %-25s %-25s %-20s %-20d %-20d %-20f%n",i+1,regNoArray[i],nameArray[i],nicArray[i],prfArray[i],dbmsArray[i],0f);
+			}
+			System.out.println();
+			
+			if(isInvalidOption('t',"Do you want to go to home page (Y/N) : ")) {isContinue = false; clearConsole();}
+			else clearConsole();
+			
+		}while(isContinue);
+	}
+	
+	// batch wise student report
+	public static void batchWiseStudentReport(){
+		Scanner scanner = new Scanner(System.in);
+		boolean isContinue = false;
+		String line = "---------------------------------------------------------------------------------------------------------------------------------------------------";
+		do{
+			isContinue = true;
+			
+			drawBox("Home > Report Management > Batch wise Student Report");
+			int k = 0;
+			int exitOption = 0;
+			for (; k < batchNameArray.length; k++)
+			{
+				System.out.println("\t["+(k+1)+"] "+batchNameArray[k]);
+				
+			}
+			System.out.println("\t["+(exitOption = k+1)+"] Exit");
+			
+			System.out.print("Enter an option : ");
+			int option = scanner.nextInt();
+			
+			if(option > 0 && option <= k+1){
+				clearConsole();
+				
+				if(option != k+1){
+					int batchName = batchNameArray[option-1];
+					
+					drawBox("\b\b\bHome > Report Management > Batch wise Student Report > "+batchName);
+					System.out.println();
+					
+					System.out.println(line);
+					System.out.printf("%-10s %-25s %-25s %-20s %-20s %-20s %-20s%n","No","Registration No","Student Name","NIC","PRF Marks","DBMS Marks","GPA");
+					System.out.println(line);
+					
+					
+					int no = 1;
+					for (int i = 0; i < regNoArray.length; i++)
+					{
+						String spliteBatchName = regNoArray[i].substring(4,7);
+						int batchNameInt = Integer.parseInt(spliteBatchName);
+						if(batchNameInt == batchName){
+							//int batchIndex = findIndexInArray(regNoArray,regNoArray[i]);
+							System.out.printf("%-10d %-25s %-25s %-20s %-20d %-20d %-20f%n",no++,regNoArray[i],nameArray[i],nicArray[i],prfArray[i],dbmsArray[i],0f);
+						}
+					}
+					
+					
+					if(isInvalidOption('t',"Do you want to go to home page (Y/N) : ")) {isContinue = false; clearConsole();}
+					else clearConsole();
+				}else{isContinue = false; clearConsole();}
+			}else{
+				if(isInvalidOption('e',"")) {isContinue = false; clearConsole();}
+				else clearConsole();
+			}
+			
+		}while(isContinue); 
+	}
+	
 	
 	// update array value
 	public static void updateArrayValue(String[] array,int index, String value){
