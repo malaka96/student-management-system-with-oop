@@ -123,6 +123,9 @@ class StudentManagementSystem {
             "Ekanayake Kumara", "Bandara Herath", "Weerasinghe Rajapaksha", "Karunaratne Abeysekera", "Perera Dias",
 
     };
+    
+    public static String[] sortedNameArray = {};
+    public static String[] sortedRegNoArray = {};
 
     static int[] prfArray = {
             85, 39, -1, 72, 44,
@@ -392,6 +395,8 @@ class StudentManagementSystem {
     
     // Report Generator
     public static void reportGenerator() {
+		sortArrayAscending(nameArray,sortedNameArray);
+		
 		boolean isContinue = false;
 		
 		do{
@@ -399,7 +404,7 @@ class StudentManagementSystem {
 			
 			drawBox("Home > Report Generator");
 			System.out.println("\t[1] Student Registration Report");
-			System.out.println("\t[2] Batch — wise Student Report");
+			System.out.println("\t[2] Batch wise Student Report");
 			System.out.println("\t[3] Industry Training Eligibility Report");
 			System.out.println("\t[4] Exit");
 			
@@ -416,6 +421,8 @@ class StudentManagementSystem {
 						batchWiseStudentReport();
 						break;
 					case 3:
+						clearConsole();
+						industryTrainingEligibility();
 						break;
 					case 4:
 						clearConsole();
@@ -571,7 +578,7 @@ class StudentManagementSystem {
 				System.out.println("\tStudent Nic : "+nicArray[regNoIndex]);
 				System.out.println("\tStudent PRF Marks : "+prfArray[regNoIndex]);
 				System.out.println("\tStudent DBMS Marks : "+dbmsArray[regNoIndex]);
-				System.out.println("\tStudent GPA : ");
+				System.out.println("\tStudent GPA : " + calculateGPA(dbmsArray[regNoIndex],prfArray[regNoIndex]));
 				
 				if(isInvalidOption('t',"Do you want to search another student details (Y/N) : "))clearConsole();
 				else {isContinue = false; clearConsole();}
@@ -601,7 +608,7 @@ class StudentManagementSystem {
 				System.out.println("\tStudent Nic : "+nicArray[regNoIndex]);
 				System.out.println("\tStudent PRF Marks : "+prfArray[regNoIndex]);
 				System.out.println("\tStudent DBMS Marks : "+dbmsArray[regNoIndex]);
-				System.out.println("\tStudent GPA : ");
+				System.out.println("\tStudent GPA : " + calculateGPA(dbmsArray[regNoIndex],prfArray[regNoIndex]));
 				
 				if(isInvalidOption('t',"Do you want to delete this student profile (Y/N) : ")){
 					
@@ -775,6 +782,7 @@ class StudentManagementSystem {
 		}while(isContinue);
 	}
 	
+	
 	// dbms makrs update
 	public static void dbmsMakrsUpdate(){
 		Scanner scanner = new Scanner(System.in);
@@ -830,6 +838,10 @@ class StudentManagementSystem {
 	public static void studentRegistrationReport(){
 		Scanner scanner = new Scanner(System.in);
 		boolean isContinue = false;
+		int index = 0;
+		
+		System.out.println(Arrays.toString(sortedNameArray));
+		
 		String line = "---------------------------------------------------------------------------------------------------------------------------------------------------";
 		do{
 			isContinue = true;
@@ -841,9 +853,12 @@ class StudentManagementSystem {
 			System.out.printf("%-10s %-25s %-25s %-20s %-20s %-20s %-20s%n","No","Registration No","Student Name","NIC","PRF Marks","DBMS Marks","GPA");
 			System.out.println(line);
 			
-			for (int i = 0; i < nameArray.length; i++)
+			for (int i = 0; i < sortedRegNoArray.length; i++)
 			{
-				System.out.printf("%-10d %-25s %-25s %-20s %-20d %-20d %-20f%n",i+1,regNoArray[i],nameArray[i],nicArray[i],prfArray[i],dbmsArray[i],0f);
+				index = findIndexInArray(regNoArray,sortedRegNoArray[i]);
+				
+				System.out.printf("%-10d %-25s %-25s %-20s %-20d %-20d %-20.1f%n",i+1,regNoArray[index],nameArray[index],nicArray[index],prfArray[index],dbmsArray[index],calculateGPA(dbmsArray[index],prfArray[index]));
+				//System.out.println(regNoArray[index] +" "+ nameArray[index]+" "+nicArray[index]);
 			}
 			System.out.println();
 			
@@ -857,6 +872,7 @@ class StudentManagementSystem {
 	public static void batchWiseStudentReport(){
 		Scanner scanner = new Scanner(System.in);
 		boolean isContinue = false;
+		int index = 0;
 		String line = "---------------------------------------------------------------------------------------------------------------------------------------------------";
 		do{
 			isContinue = true;
@@ -891,11 +907,13 @@ class StudentManagementSystem {
 					int no = 1;
 					for (int i = 0; i < regNoArray.length; i++)
 					{
-						String spliteBatchName = regNoArray[i].substring(4,7);
+						index = findIndexInArray(regNoArray, sortedRegNoArray[i]);
+						
+						String spliteBatchName = regNoArray[index].substring(4,7);
 						int batchNameInt = Integer.parseInt(spliteBatchName);
 						if(batchNameInt == batchName){
 							//int batchIndex = findIndexInArray(regNoArray,regNoArray[i]);
-							System.out.printf("%-10d %-25s %-25s %-20s %-20d %-20d %-20f%n",no++,regNoArray[i],nameArray[i],nicArray[i],prfArray[i],dbmsArray[i],0f);
+							System.out.printf("%-10d %-25s %-25s %-20s %-20d %-20d %-20.1f%n",no++,regNoArray[index],nameArray[index],nicArray[index],prfArray[index],dbmsArray[index],calculateGPA(dbmsArray[index],prfArray[index]));
 						}
 					}
 					
@@ -909,6 +927,43 @@ class StudentManagementSystem {
 			}
 			
 		}while(isContinue); 
+	}
+	
+	// Industry Training Eligibility Report
+	public static void industryTrainingEligibility(){
+		Scanner scanner = new Scanner(System.in);
+		boolean isContinue = false;
+		//int index = 0;
+		
+		System.out.println(Arrays.toString(sortedNameArray));
+		
+		String line = "---------------------------------------------------------------------------------------------------------------------------------------------------";
+		do{
+			isContinue = true;
+			
+			drawBox("\b\b\bHome > Report Management > Industry Training Eligibility Report");
+			System.out.println();
+			
+			System.out.println(line);
+			System.out.printf("%-10s %-25s %-25s %-20s %-20s %-20s %-20s%n","No","Registration No","Student Name","NIC","PRF Marks","DBMS Marks","GPA");
+			System.out.println(line);
+			
+			int no = 1;
+			for (int i = 0; i < sortedRegNoArray.length; i++)
+			{
+				//index = findIndexInArray(regNoArray,sortedRegNoArray[i]);
+				
+				if(calculateGPA(dbmsArray[i],prfArray[i]) > 3.25 && prfArray[i] > 50 && dbmsArray[i] > 50){
+					System.out.printf("%-10d %-25s %-25s %-20s %-20d %-20d %-20.1f%n",no++,regNoArray[i],nameArray[i],nicArray[i],prfArray[i],dbmsArray[i],calculateGPA(dbmsArray[i],prfArray[i]));
+					//System.out.println(regNoArray[index] +" "+ nameArray[index]+" "+nicArray[index]);
+				}
+			}
+			System.out.println();
+			
+			if(isInvalidOption('t',"Do you want to go to home page (Y/N) : ")) {isContinue = false; clearConsole();}
+			else clearConsole();
+			
+		}while(isContinue);
 	}
 	
 	
@@ -1020,6 +1075,82 @@ class StudentManagementSystem {
 		if(answer == 'y') return true;
 		return false;
 		
+	}
+	
+	
+    public static double calculateGPA(int marksDBMS, int marksPRF) {
+		
+		if(marksDBMS <= -1 || marksPRF <= -1) return 0;
+		
+        double gradePointDBMS;
+        String gradeDBMS;
+        
+        if (marksDBMS >= 75) {
+            gradeDBMS = "A";
+            gradePointDBMS = 4.0;
+        } else if (marksDBMS >= 65) {
+            gradeDBMS = "B";
+            gradePointDBMS = 3.0;
+        } else if (marksDBMS >= 55) {
+            gradeDBMS = "C";
+            gradePointDBMS = 2.0;
+        } else if (marksDBMS >= 45) {
+            gradeDBMS = "S";
+            gradePointDBMS = 1.0;
+        } else {
+            gradeDBMS = "F";
+            gradePointDBMS = 0.0;
+        }
+
+        double gradePointPRF;
+        String gradePRF;
+
+        if (marksPRF >= 90) {
+            gradePRF = "A";
+            gradePointPRF = 4.0;
+        } else if (marksPRF >= 80) {
+            gradePRF = "B";
+            gradePointPRF = 3.0;
+        } else if (marksPRF >= 70) {
+            gradePRF = "C";
+            gradePointPRF = 2.0;
+        } else if (marksPRF >= 60) {
+            gradePRF = "S";
+            gradePointPRF = 1.0;
+        } else {
+            gradePRF = "F";
+            gradePointPRF = 0.0;
+        }
+
+        double gpa = (gradePointDBMS + gradePointPRF) / 2.0;
+        return gpa;
+    }
+	
+	
+	public static void sortArrayAscending(String[] array, String[] sortedArray){
+		String[] originalArray = Arrays.copyOf(array, array.length);
+        String[] originalRegNoArray = Arrays.copyOf(regNoArray, regNoArray.length);
+
+        for (int i = 0; i < array.length - 1; i++) {
+            for (int j = 0; j < array.length - 1; j++) {
+                if (array[j].compareTo(array[j + 1]) > 0) {
+                    String temp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = temp;
+
+                    String temp2 = regNoArray[j];
+                    regNoArray[j] = regNoArray[j + 1];
+                    regNoArray[j + 1] = temp2;
+                }
+            }
+        }
+
+        sortedArray = Arrays.copyOf(array, array.length);
+        sortedRegNoArray = Arrays.copyOf(regNoArray, regNoArray.length);
+
+        nameArray = Arrays.copyOf(originalArray, originalArray.length);
+        regNoArray = Arrays.copyOf(originalRegNoArray, originalRegNoArray.length);
+
 	}
     
     //draw asscii box
