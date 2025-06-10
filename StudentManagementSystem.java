@@ -10,6 +10,10 @@ class StudentManagementSystem {
     static int[] batchStatusArray = { 0, 0, 0, 0, 1, 1 };
     static int[] batchStudentCountArray = { 25, 25, 25, 25, 25, 25 };
     
+    // student object array
+    static Student[] studentsArray = {
+		new Student("M00","20402443","Nirmal",23,85),};
+    
     // Student data
     static String[] regNoArray = {
             "PR24105001", "PR24105002", "PR24105003", "PR24105004", "PR24105005",
@@ -470,11 +474,22 @@ class StudentManagementSystem {
 						int lectureMode = scanner.nextInt();
 						
 						String generatedRegNo = generateRegistrationNumber(lectureMode,batchName);
-						nicArray = extendArray(nicArray,nic);
-						nameArray = extendArray(nameArray,name);
-						regNoArray = extendArray(regNoArray,generatedRegNo);
-						prfArray = extendArray(prfArray,-2);
-						dbmsArray = extendArray(dbmsArray,-2);
+						
+						Student s = new Student(generatedRegNo,nic,name,-2,-2);
+						for(Student ns : studentsArray){
+							System.out.println(ns.getName() + " before");
+						}
+						studentsArray = extendArray(studentsArray, s);
+						s = null;
+						for(Student ns : studentsArray){
+							System.out.println(ns.getName()+ " after");
+						}
+						
+						//nicArray = extendArray(nicArray,nic);
+						//nameArray = extendArray(nameArray,name);
+						//regNoArray = extendArray(regNoArray,generatedRegNo);
+						//prfArray = extendArray(prfArray,-2);
+						//dbmsArray = extendArray(dbmsArray,-2);
 						
 						
 						System.out.println("\tStudent Registration No - "+generatedRegNo);
@@ -1019,6 +1034,19 @@ class StudentManagementSystem {
 	}
 	
     //extend arrays
+    
+    public static Student[] extendArray(Student[] objArray, Student newStudent){
+		Student[] tempStudentArray = new Student[objArray.length + 1];
+		for (int i = 0; i < objArray.length; i++)
+		{
+			tempStudentArray[i] = objArray[i];
+		}
+		tempStudentArray[tempStudentArray.length - 1] = newStudent;
+		
+		return tempStudentArray;
+		
+	}
+    
     public static String[] extendArray(String[] array, String newValue){
 		String[] tempArray = new String[array.length+1];
 		for (int i = 0; i < array.length; i++)
