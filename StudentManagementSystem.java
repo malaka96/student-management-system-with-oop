@@ -1,5 +1,34 @@
 import java.util.*;
 
+class Student{
+	private String regId;
+	private String nic;
+	private String name;
+	
+	private int prfMarks;
+	private int dbmsMarks;
+	
+	Student(String regId, String nic, String name, int prfMarks, int dbmsMarks){
+		this.regId = regId;
+		this.nic = nic;
+		this.name = name;
+		this.prfMarks = prfMarks;
+		this.dbmsMarks = dbmsMarks;
+	}
+	
+	void setRegId(String regId){this.regId = regId;}
+	void setNic(String nic){this.nic = nic;}
+	void setName(String name){this.name = name;}
+	void setPrfMarks(int prfMarks){this.prfMarks = prfMarks;}
+	void setDbmsMarks(int dbmsMarks){this.dbmsMarks = dbmsMarks;}
+	
+	String getRegId(){return this.regId;}
+	String getNic(){return this.nic;}
+	String getName(){return this.name;}
+	int getPrfMarks(){return this.prfMarks;}
+	int getDbmsMarks(){return this.dbmsMarks;}
+}
+
 class StudentManagementSystem {
     // Batch status
     public static final int ENROLLMENTOPEN = 1;
@@ -12,193 +41,12 @@ class StudentManagementSystem {
     
     // student object array
     static Student[] studentsArray = {
-		new Student("M00","20402443","Nirmal",23,85),};
+		new Student("PR24110001","20402443","Nirmal",-2,-2),
+	};
+	
+	static Student[] sortedStudentsArray = {};
     
-    // Student data
-    static String[] regNoArray = {
-            "PR24105001", "PR24105002", "PR24105003", "PR24105004", "PR24105005",
-            "PR24105006", "PR24105007", "PR24105008", "PR24105009", "PR24105010",
-            "OR24105011", "OR24105012", "OR24105013", "OR24105014", "OR24105015",
-            "PR24105016", "PR24105017", "PR24105018", "OR24105019", "OR24105020",
-            "PR24105021", "PR24105022", "OR24105023", "OR24105024", "PR24105025",
-            "PR24106001", "PR24106002", "PR24106003", "PR24106004", "PR24106005",
-            "PR24106006", "PR24106007", "PR24106008", "PR24106009", "PR24106010",
-            "OR24106011", "OR24106012", "OR24106013", "OR24106014", "OR24106015",
-            "PR24106016", "PR24106017", "PR24106018", "OR24106019", "OR24106020",
-            "PR24106021", "PR24106022", "OR24106023", "OR24106024", "PR24106025",
-            "PR24107001", "PR24107002", "PR24107003", "PR24107004", "PR24107005",
-            "PR24107006", "PR24107007", "PR24107008", "PR24107009", "PR24107010",
-            "OR24107011", "OR24107012", "OR24107013", "OR24107014", "OR24107015",
-            "PR24107016", "PR24107017", "PR24107018", "OR24107019", "OR24107020",
-            "PR24107021", "PR24107022", "OR24107023", "OR24107024", "PR24107025",
-            "PR24108001", "PR24108002", "PR24108003", "PR24108004", "PR24108005",
-            "PR24108006", "PR24108007", "PR24108008", "PR24108009", "PR24108010",
-            "OR24108011", "OR24108012", "OR24108013", "OR24108014", "OR24108015",
-            "PR24108016", "PR24108017", "PR24108018", "OR24108019", "OR24108020",
-            "PR24108021", "PR24108022", "OR24108023", "OR24108024", "PR24108025",
-            "PR24109001", "PR24109002", "PR24109003", "PR24109004", "PR24109005",
-            "PR24109006", "PR24109007", "PR24109008", "PR24109009", "PR24109010",
-            "OR24109011", "OR24109012", "OR24109013", "OR24109014", "OR24109015",
-            "PR24109016", "PR24109017", "PR24109018", "OR24109019", "OR24109020",
-            "PR24109021", "PR24109022", "OR24109023", "OR24109024", "PR24109025",
-            "PR24110001", "PR24110002", "PR24110003", "PR24110004", "PR24110005",
-            "PR24110006", "PR24110007", "PR24110008", "PR24110009", "PR24110010",
-            "OR24110011", "OR24110012", "OR24110013", "OR24110014", "OR24110015",
-            "PR24110016", "PR24110017", "PR24110018", "OR24110019", "OR24110020",
-            "PR24110021", "PR24110022", "OR24110023", "OR24110024", "PR24110025"
-
-    };
-
-    static String[] nicArray = {
-            "199501012345", "199503153872", "199506202198", "199509102983", "199511258739",
-            "199512303498", "199502183764", "199504223198", "199508153210", "199510293417",
-            "199601102375", "199604182938", "199606243879", "199608142178", "199610312475",
-            "199611173452", "199603293481", "199605083217", "199607232198", "199609192375",
-            "199701212483", "199703132487", "199706253478", "199708083298", "199710243651",
-            "199712152983", "199702182734", "199704293187", "199705142375", "199709083751",
-            "199801032874", "199803232871", "199806193428", "199808013764", "199810242374",
-            "199812302984", "199802152348", "199805213471", "199807172398", "199811283472",
-            "199901122471", "199903052984", "199906213874", "199908093412", "199910273894",
-            "199912153482", "199902202394", "199904163874", "199907293481", "199911083479",
-            "200001112374", "200003143478", "200006293874", "200008103471", "200010252984",
-            "200012043894", "200002193874", "200004212374", "200005183492", "200007153871",
-            "200101232984", "200103083471", "200106273894", "200108123984", "200110043728",
-            "200112213874", "200102253471", "200104103874", "200105293784", "200107202983",
-            "200201013874", "200203253471", "200206143874", "200208083471", "200210293874",
-            "200212183471", "200202103874", "200204123894", "200205283471", "200207153874",
-            "200301093874", "200303283471", "200306153874", "200308123471", "200310083874",
-            "200312243471", "200302273874", "200304203471", "200305123874", "200307213471",
-            "200401153874", "200403123471", "200406293874", "200408083471", "200410213874",
-            "200412153471", "200402203874", "200404273471", "200405143874", "200407183471",
-            "200501023874", "200503193471", "200506153874", "200508213471", "200510083874",
-            "200512293471", "200502123874", "200504153471", "200505283874", "200507173471"
-            ,"200203456782", "200305678901", "199601234567", "199511223344", "200412345678",
-            "200512345678", "199909876543", "199812346789", "200010203040", "200608789012",
-            "200012345678", "199812345679", "199902345678", "199712345670", "200102345671",
-            "200203456782", "200305678901", "199601234567", "199511223344", "200412345678",
-            "200512345678", "199909876543", "199812346789", "200010203040", "200608789012",
-            "200012345678", "199812345679", "199902345678", "199712345670", "200102345671",
-            "200203456782", "200305678901", "199601234567", "199511223344", "200412345678",
-            "200203456782", "200305678901", "199601234567", "199511223344", "200412345678"
-        };
-
-    static String[] nameArray = {
-            "Gunawardena Weerasinghe", "Senanayake Silva", "Silva Kumara", "Kumara Herath", "Rathnayake Herath",
-            "Wijesinghe Bandara", "Rajapaksha Herath", "Senanayake Karunaratne", "Karunaratne Jayasinghe",
-            "Gunawardena Silva",
-            "Weerasinghe Rajapaksha", "Silva Rathnayake", "Fernando Perera", "Kumara Abeysekera",
-            "Ekanayake Rathnayake",
-            "Herath Gunawardena", "Abeysekera Silva", "Weerasinghe Silva", "Jayasinghe Dias", "Bandara Rathnayake",
-            "Silva Perera", "De Silva Dias", "Abeysekera Jayasinghe", "Rajapaksha Senanayake", "Kumara Karunaratne",
-            "Silva Abeysekera", "Jayasinghe Bandara", "Rathnayake Kumara", "Weerasinghe Rajapaksha",
-            "Senanayake Herath",
-            "Perera Ekanayake", "Herath Jayasinghe", "Kumara Gunawardena", "Abeysekera Silva", "Dias Fernando",
-            "Karunaratne Weerasinghe", "Ekanayake Bandara", "Rajapaksha Kumara", "Silva De Silva",
-            "Gunawardena Rathnayake",
-            "Bandara Karunaratne", "Fernando Perera", "De Silva Silva", "Rajapaksha Gunawardena", "Herath Weerasinghe",
-            "Karunaratne Dias", "Jayasinghe Silva", "Senanayake Abeysekera", "Silva Jayasinghe", "Rathnayake Kumara",
-            "Gunawardena Kumara", "Rajapaksha Silva", "Perera Jayasinghe", "Silva Ekanayake", "Dias Senanayake",
-            "Herath Abeysekera", "Rathnayake Fernando", "Kumara Herath", "Weerasinghe Silva", "Senanayake Karunaratne",
-            "Abeysekera Silva", "Bandara Gunawardena", "Karunaratne Weerasinghe", "Perera Herath", "Fernando Dias",
-            "Weerasinghe Gunawardena", "Rathnayake Kumara", "Senanayake Fernando", "Silva Bandara", "Herath Rajapaksha",
-            "Kumara Jayasinghe", "Abeysekera Perera", "Rathnayake Jayasinghe", "Kumara Weerasinghe",
-            "Rajapaksha Ekanayake",
-            "Fernando Rajapaksha", "Silva Gunawardena", "Perera Wijesinghe", "Herath Abeysekera",
-            "Rajapaksha Ekanayake",
-            "Karunaratne Silva", "Weerasinghe Fernando", "Silva Bandara", "Abeysekera Weerasinghe",
-            "Kumara Karunaratne",
-            "Dias Rajapaksha", "Herath Perera", "Rathnayake Gunawardena", "Ekanayake Jayasinghe", "Gunawardena Silva",
-            "Rajapaksha Perera", "Karunaratne Jayasinghe", "Weerasinghe Abeysekera", "Rathnayake Fernando",
-            "Kumara Herath",
-            "Silva Weerasinghe", "Herath Karunaratne", "Abeysekera Silva", "Gunawardena Ekanayake",
-            "Weerasinghe Kumara",
-            "Weerasinghe Kumara", "Rajapaksha Abeysekera", "Gunawardena Perera", "Karunaratne Silva",
-            "Herath Wijesinghe",
-            "Rathnayake Ekanayake", "Silva Fernando", "Abeysekera Rajapaksha", "Fernando Bandara", "Perera Herath",
-            "Weerasinghe Jayasinghe", "Silva Karunaratne", "Rathnayake Gunawardena", "Herath Kumara",
-            "Abeysekera Silva",
-            "Ekanayake Bandara", "Rajapaksha Fernando", "Gunawardena Weerasinghe", "Kumara Karunaratne", "Silva Dias",
-            "Perera Weerasinghe", "Karunaratne Rajapaksha", "Jayasinghe Silva", "Rathnayake Perera", "Silva Ekanayake",
-            "Silva Karunaratne", "Herath Fernando", "Kumara Jayasinghe", "Weerasinghe Perera", "Abeysekera Rajapaksha",
-            "Rathnayake Karunaratne", "Ekanayake Bandara", "Gunawardena Perera", "Silva Wijesinghe",
-            "Rajapaksha Jayasinghe",
-            "Rathnayake Fernando", "Karunaratne Kumara", "Perera Silva", "Gunawardena Ekanayake", "Bandara Rajapaksha",
-            "Silva Herath", "Rathnayake Weerasinghe", "Perera Gunawardena", "Herath Karunaratne", "Silva Rajapaksha",
-            "Ekanayake Kumara", "Bandara Herath", "Weerasinghe Rajapaksha", "Karunaratne Abeysekera", "Perera Dias",
-
-    };
-    
-    public static String[] sortedNameArray = {};
-    public static String[] sortedRegNoArray = {};
-
-    static int[] prfArray = {
-            85, 39, -1, 72, 44,
-            91, 60, 38, 95, 49,
-            -1, 67, 23, 58, 88,
-            81, 73, 29, 62, -1,
-            79, 53, 94, 47, 35,
-            93, 15, -1, 82, 45,
-            88, 23, 79, 37, -1,
-            68, 100, 59, 29, 92,
-            12, 77, 38, 66, 9,
-            84, 51, 32, -1, 97,
-            95, -1, 63, 88, 32,
-            76, 97, 54, -1, 23,
-            90, 35, 81, 61, 44,
-            67, 100, 17, 85, 29,
-            70, 42, -1, 60, 86,
-            86, 57, 91, 35, -1,
-            76, 48, 94, 23, 69,
-            -1, 80, 55, 88, 32,
-            100, 67, 43, -1, 90,
-            60, 77, 25, 71, 84,
-            92, 68, 59, 85, 63,
-            76, 91, 70, 84, 63,
-            72, 89, 45, 81, 77,
-            68, 63, 88, 75, 90,
-            57, 79, 92, 62, 100,
-            -2, -2, -2, -2, -2,
-            -2, -2, -2, -2, -2,
-            -2, -2, -2, -2, -2,
-            -2, -2, -2, -2, -2,
-            -2, -2, -2, -2, -2
-
-    };
-
-    static int[] dbmsArray = {
-            66, 45, 93, 58, -1,
-            37, 88, 21, 79, 40,
-            76, 54, -1, 69, 92,
-            25, 84, 33, 60, 71,
-            59, -1, 98, 27, 48,
-            35, 91, 60, -1, 72,
-            49, 26, 80, 14, 89,
-            67, -1, 31, 94, 53,
-            78, 5, 90, 24, 86,
-            39, -1, 61, 73, 100,
-            38, 91, -1, 74, 55,
-            82, 66, 49, 99, 13,
-            80, 70, 93, 36, 59,
-            85, 47, 90, -1, 22,
-            77, 34, 63, 100, 29,
-            79, 62, 87, -1, 54,
-            46, 99, 39, 70, -1,
-            75, 83, 58, 92, 30,
-            91, 40, 63, 95, 68,
-            -1, 66, 21, 88, 37,
-            67, 91, 85, 73, 70,
-            63, 76, 88, 55, 64,
-            79, 80, 59, 92, 68,
-            100, 77, 83, 45, 62,
-            66, 59, 78, 85, 56,
-            -2, -2, -2, -2, -2,
-            -2, -2, -2, -2, -2,
-            -2, -2, -2, -2, -2,
-            -2, -2, -2, -2, -2,
-            -2, -2, -2, -2, -2
-    };
-
-    
+   
 
     // console clear
     public final static void clearConsole() {
@@ -399,7 +247,8 @@ class StudentManagementSystem {
     
     // Report Generator
     public static void reportGenerator() {
-		sortArrayAscending(nameArray,sortedNameArray);
+		//sortArrayAscending(nameArray,sortedNameArray);
+		sortArrayAscending();
 		
 		boolean isContinue = false;
 		
@@ -465,7 +314,7 @@ class StudentManagementSystem {
 					System.out.print("Enter Student Nic : ");
 					String nic = scanner.next();
 					
-					int checkNic = findIndexInArray(nicArray,nic);
+					int checkNic = findIndexInArray(studentsArray,nic,'n');
 					if(checkNic == -1){
 						System.out.print("Enter Student Name : ");
 						String name = scanner.next();
@@ -475,12 +324,12 @@ class StudentManagementSystem {
 						
 						String generatedRegNo = generateRegistrationNumber(lectureMode,batchName);
 						
-						Student s = new Student(generatedRegNo,nic,name,-2,-2);
+						Student student = new Student(generatedRegNo,nic,name,-2,-2);
 						for(Student ns : studentsArray){
 							System.out.println(ns.getName() + " before");
 						}
-						studentsArray = extendArray(studentsArray, s);
-						s = null;
+						studentsArray = extendArray(studentsArray, student);
+						student = null;
 						for(Student ns : studentsArray){
 							System.out.println(ns.getName()+ " after");
 						}
@@ -529,42 +378,43 @@ class StudentManagementSystem {
 			System.out.print("Enter Student Registration No : ");
 			String regNumber = scanner.next();
 
-			int regNoIndex = findIndexInArray(regNoArray,regNumber);
+			int regNoIndex = findIndexInArray(studentsArray,regNumber,'r');
 			if(regNoIndex != -1){
 				
-				System.out.println("\tStudent Name : "+findValueInArray(nameArray,regNoIndex));
-				System.out.println("\tStudent Nic : "+findValueInArray(nicArray,regNoIndex));
+				System.out.println("\tStudent Name : "+studentsArray[regNoIndex].getName());
+				System.out.println("\tStudent Nic : "+studentsArray[regNoIndex].getNic());
 				
-				System.out.print("What do you want to update ? \n\t(01) Student Name\n\t(01) Student Nic\n\nEnter an option : ");
+				System.out.print("What do you want to update ? \n\t(01) Student Name\n\t(02) Student Nic\n\nEnter an option : ");
 				int option = scanner.nextInt();
 				switch(option){
 						case 1:
 							System.out.println("\tRegistration No : "+regNumber);
-							System.out.println("\tStudent Nic : "+findValueInArray(nicArray,regNoIndex));
-							System.out.println("\tStudnet Current Name : "+findValueInArray(nameArray,regNoIndex));
+							System.out.println("\tStudent Nic : "+studentsArray[regNoIndex].getNic());
+							System.out.println("\tStudnet Current Name : "+studentsArray[regNoIndex].getName());
 							System.out.println();
 							
 							System.out.print("Enter Student Name to Update : ");
 							String name = scanner.next();
-							updateArrayValue(nameArray,regNoIndex,name);
+							//updateArrayValue(nameArray,regNoIndex,name);
+							studentsArray[regNoIndex].setName(name);
 							
-							System.out.println(Arrays.toString(nameArray));
-							if(isInvalidOption('t',"\tStudent name was successfully added to the system.\nDo you want to add another student (Y/N) : "))clearConsole();
+							//System.out.println(Arrays.toString(nameArray));
+							if(isInvalidOption('t',"\tStudent name was successfully added to the system.\nDo you want to update another student (Y/N) : "))clearConsole();
 							else {isContinue = false; clearConsole();}
 							
 							break;
 						case 2:
 							System.out.println("\tRegistration No : "+regNumber);
-							System.out.println("\tStudnet Name : "+findValueInArray(nameArray,regNoIndex));
-							System.out.println("\tStudent Current Nic : "+findValueInArray(nicArray,regNoIndex));
+							System.out.println("\tStudnet Name : "+studentsArray[regNoIndex].getName());
+							System.out.println("\tStudent Current Nic : "+studentsArray[regNoIndex].getNic());
 							System.out.println();
 							
 							System.out.print("Enter Student nic to Update : ");
 							String nic = scanner.next();
-							updateArrayValue(nicArray,regNoIndex,nic);
+							//updateArrayValue(nicArray,regNoIndex,nic);
+							studentsArray[regNoIndex].setNic(nic);
 							
-							System.out.println(Arrays.toString(nameArray));
-							if(isInvalidOption('t',"\tStudent name was successfully added to the system.\nDo you want to add another student (Y/N) : "))clearConsole();
+							if(isInvalidOption('t',"\tStudent name was successfully added to the system.\nDo you want to add update student (Y/N) : "))clearConsole();
 							else {isContinue = false; clearConsole();}
 							break;
 				}
@@ -586,14 +436,14 @@ class StudentManagementSystem {
 			System.out.print("Enter Student Registration No : ");
 			String regNumber = scanner.next();
 			
-			int regNoIndex = findIndexInArray(regNoArray,regNumber);
+			int regNoIndex = findIndexInArray(studentsArray,regNumber,'r');
 			if(regNoIndex != -1){
 				System.out.println("\tRegistration No : "+regNumber);
-				System.out.println("\tStudent Name : "+nameArray[regNoIndex]);
-				System.out.println("\tStudent Nic : "+nicArray[regNoIndex]);
-				System.out.println("\tStudent PRF Marks : "+prfArray[regNoIndex]);
-				System.out.println("\tStudent DBMS Marks : "+dbmsArray[regNoIndex]);
-				System.out.println("\tStudent GPA : " + calculateGPA(dbmsArray[regNoIndex],prfArray[regNoIndex]));
+				System.out.println("\tStudent Name : "+studentsArray[regNoIndex].getName());
+				System.out.println("\tStudent Nic : "+studentsArray[regNoIndex].getNic());
+				System.out.println("\tStudent PRF Marks : "+studentsArray[regNoIndex].getPrfMarks());
+				System.out.println("\tStudent DBMS Marks : "+studentsArray[regNoIndex].getDbmsMarks());
+				System.out.println("\tStudent GPA : " + calculateGPA(studentsArray[regNoIndex].getDbmsMarks(),studentsArray[regNoIndex].getPrfMarks()));
 				
 				if(isInvalidOption('t',"Do you want to search another student details (Y/N) : "))clearConsole();
 				else {isContinue = false; clearConsole();}
@@ -616,22 +466,24 @@ class StudentManagementSystem {
 			System.out.print("Enter Student Registration No : ");
 			String regNumber = scanner.next();
 			
-			int regNoIndex = findIndexInArray(regNoArray,regNumber);
+			int regNoIndex = findIndexInArray(studentsArray,regNumber,'r');
 			if(regNoIndex != -1){
 				System.out.println("\tRegistration No : "+regNumber);
-				System.out.println("\tStudent Name : "+nameArray[regNoIndex]);
-				System.out.println("\tStudent Nic : "+nicArray[regNoIndex]);
-				System.out.println("\tStudent PRF Marks : "+prfArray[regNoIndex]);
-				System.out.println("\tStudent DBMS Marks : "+dbmsArray[regNoIndex]);
-				System.out.println("\tStudent GPA : " + calculateGPA(dbmsArray[regNoIndex],prfArray[regNoIndex]));
+				System.out.println("\tStudent Name : "+studentsArray[regNoIndex].getName());
+				System.out.println("\tStudent Nic : "+studentsArray[regNoIndex].getNic());
+				System.out.println("\tStudent PRF Marks : "+studentsArray[regNoIndex].getPrfMarks());
+				System.out.println("\tStudent DBMS Marks : "+studentsArray[regNoIndex].getDbmsMarks());
+				System.out.println("\tStudent GPA : " + calculateGPA(studentsArray[regNoIndex].getDbmsMarks(),studentsArray[regNoIndex].getPrfMarks()));
 				
 				if(isInvalidOption('t',"Do you want to delete this student profile (Y/N) : ")){
 					
-					regNoArray = shrinkArray(regNoArray,regNoIndex);
+					/*regNoArray = shrinkArray(regNoArray,regNoIndex);
 					nameArray = shrinkArray(nameArray,regNoIndex);
 					nicArray = shrinkArray(nicArray,regNoIndex);
 					prfArray = shrinkArray(prfArray,regNoIndex);
-					dbmsArray = shrinkArray(dbmsArray,regNoIndex);
+					dbmsArray = shrinkArray(dbmsArray,regNoIndex); */
+					
+					studentsArray = shrinkArray(studentsArray, regNoIndex);
 					
 					if(isInvalidOption('t',"\tStudent was successfully deleted from the system.\nDo you want to delete another student profile (Y/N) : ")) clearConsole();
 					else {isContinue = false; clearConsole();}
@@ -758,32 +610,35 @@ class StudentManagementSystem {
 			System.out.print("Enter Student Registration No : ");
 			String regNumber = scanner.next();
 			
-			int regNoIndex = findIndexInArray(regNoArray,regNumber);
+			int regNoIndex = findIndexInArray(studentsArray,regNumber,'r');
 			if(regNoIndex != -1){
-				System.out.println("\tStudent Name : "+nameArray[regNoIndex]);
-				System.out.println("\tStudent Nic : "+nicArray[regNoIndex]);
+				System.out.println("\tStudent Name : "+studentsArray[regNoIndex].getName());
+				System.out.println("\tStudent Nic : "+studentsArray[regNoIndex].getNic());
 				
-				if(prfArray[regNoIndex] > -1){
-					if(isInvalidOption('t',"This student has already completed the PRF module.\n\t PRF Marks : "+prfArray[regNoIndex]+"\nDo you want to update PRF Marks (Y/N) : ")){
+				if(studentsArray[regNoIndex].getPrfMarks() > -1){
+					if(isInvalidOption('t',"This student has already completed the PRF module.\n\t PRF Marks : "+studentsArray[regNoIndex].getPrfMarks()+"\nDo you want to update PRF Marks (Y/N) : ")){
 						
 						System.out.print("\tEnter PRF Makrs : ");
-						updateArrayValue(prfArray,regNoIndex,scanner.nextInt());
+						//updateArrayValue(prfArray,regNoIndex,scanner.nextInt());
+						studentsArray[regNoIndex].setPrfMarks(scanner.nextInt());
 						
 						if(isInvalidOption('t',"\tMarks were successfully updated.\nDo you want to update another student marks (Y/N): ")) clearConsole();
 						else {isContinue = false; clearConsole();}
 						
 					}else {isContinue = false; clearConsole();}
 					
-				}else if(prfArray[regNoIndex] == -2){
+				}else if(studentsArray[regNoIndex].getPrfMarks() == -2){
 						System.out.print("\tEnter PRF Makrs : ");
-						updateArrayValue(prfArray,regNoIndex,scanner.nextInt());
+						//updateArrayValue(prfArray,regNoIndex,scanner.nextInt());
+						studentsArray[regNoIndex].setPrfMarks(scanner.nextInt());
 						
 						if(isInvalidOption('t',"\tMarks were successfully updated.\nDo you want to update another student marks (Y/N): ")) clearConsole();
 						else {isContinue = false; clearConsole();}
 				}else{
 					System.out.println("This student was absent from the exam. You can update the narks if they participate in it...");
 					System.out.print("\tEnter PRF Makrs : ");
-					updateArrayValue(prfArray,regNoIndex,scanner.nextInt());
+					//updateArrayValue(prfArray,regNoIndex,scanner.nextInt());
+					studentsArray[regNoIndex].setPrfMarks(scanner.nextInt());
 						
 					if(isInvalidOption('t',"\tMarks were successfully updated.\nDo you want to update another student marks (Y/N): ")) clearConsole();
 					else {isContinue = false; clearConsole();}
@@ -809,32 +664,35 @@ class StudentManagementSystem {
 			System.out.print("Enter Student Registration No : ");
 			String regNumber = scanner.next();
 			
-			int regNoIndex = findIndexInArray(regNoArray,regNumber);
+			int regNoIndex = findIndexInArray(studentsArray,regNumber,'r');
 			if(regNoIndex != -1){
-				System.out.println("\tStudent Name : "+nameArray[regNoIndex]);
-				System.out.println("\tStudent Nic : "+nicArray[regNoIndex]);
+				System.out.println("\tStudent Name : "+studentsArray[regNoIndex].getName());
+				System.out.println("\tStudent Nic : "+studentsArray[regNoIndex].getNic());
 				
-				if(dbmsArray[regNoIndex] > -1){
-					if(isInvalidOption('t',"This student has already completed the DBMS module.\n\t DBMS Marks : "+dbmsArray[regNoIndex]+"\nDo you want to update DBMS Marks (Y/N) : ")){
+				if(studentsArray[regNoIndex].getDbmsMarks() > -1){
+					if(isInvalidOption('t',"This student has already completed the DBMS module.\n\t DBMS Marks : "+studentsArray[regNoIndex].getDbmsMarks()+"\nDo you want to update DBMS Marks (Y/N) : ")){
 						
 						System.out.print("\tEnter DBMS Makrs : ");
-						updateArrayValue(dbmsArray,regNoIndex,scanner.nextInt());
+						//updateArrayValue(dbmsArray,regNoIndex,scanner.nextInt());
+						studentsArray[regNoIndex].setDbmsMarks(scanner.nextInt());
 						
 						if(isInvalidOption('t',"\tMarks were successfully updated.\nDo you want to update another student marks (Y/N): ")) clearConsole();
 						else {isContinue = false; clearConsole();}
 						
 					}else {isContinue = false; clearConsole();}
 					
-				}else if(dbmsArray[regNoIndex] == -2){
+				}else if(studentsArray[regNoIndex].getDbmsMarks() == -2){
 						System.out.print("\tEnter DBMS Makrs : ");
-						updateArrayValue(dbmsArray,regNoIndex,scanner.nextInt());
+						//updateArrayValue(dbmsArray,regNoIndex,scanner.nextInt());
+						studentsArray[regNoIndex].setDbmsMarks(scanner.nextInt());
 						
 						if(isInvalidOption('t',"\tMarks were successfully updated.\nDo you want to update another student marks (Y/N): ")) clearConsole();
 						else {isContinue = false; clearConsole();}
 				}else{
 					System.out.println("This student was absent from the exam. You can update the narks if they participate in it...");
 					System.out.print("\tEnter DBMS Makrs : ");
-					updateArrayValue(dbmsArray,regNoIndex,scanner.nextInt());
+					//updateArrayValue(dbmsArray,regNoIndex,scanner.nextInt());
+					studentsArray[regNoIndex].setDbmsMarks(scanner.nextInt());
 						
 					if(isInvalidOption('t',"\tMarks were successfully updated.\nDo you want to update another student marks (Y/N): ")) clearConsole();
 					else {isContinue = false; clearConsole();}
@@ -855,7 +713,7 @@ class StudentManagementSystem {
 		boolean isContinue = false;
 		int index = 0;
 		
-		System.out.println(Arrays.toString(sortedNameArray));
+		//System.out.println(Arrays.toString(sortedNameArray));
 		
 		String line = "---------------------------------------------------------------------------------------------------------------------------------------------------";
 		do{
@@ -868,11 +726,11 @@ class StudentManagementSystem {
 			System.out.printf("%-10s %-25s %-25s %-20s %-20s %-20s %-20s%n","No","Registration No","Student Name","NIC","PRF Marks","DBMS Marks","GPA");
 			System.out.println(line);
 			
-			for (int i = 0; i < sortedRegNoArray.length; i++)
+			for (int i = 0; i < sortedStudentsArray.length; i++)
 			{
-				index = findIndexInArray(regNoArray,sortedRegNoArray[i]);
+				//index = findIndexInArray(studentsArray,sortedRegNoArray[i]);
 				
-				System.out.printf("%-10d %-25s %-25s %-20s %-20d %-20d %-20.1f%n",i+1,regNoArray[index],nameArray[index],nicArray[index],prfArray[index],dbmsArray[index],calculateGPA(dbmsArray[index],prfArray[index]));
+				System.out.printf("%-10d %-25s %-25s %-20s %-20d %-20d %-20.1f%n",i+1,sortedStudentsArray[i].getRegId(),sortedStudentsArray[i].getName(),sortedStudentsArray[i].getNic(),sortedStudentsArray[i].getPrfMarks(),sortedStudentsArray[i].getDbmsMarks(),calculateGPA(sortedStudentsArray[i].getDbmsMarks(),sortedStudentsArray[i].getPrfMarks()));
 				//System.out.println(regNoArray[index] +" "+ nameArray[index]+" "+nicArray[index]);
 			}
 			System.out.println();
@@ -920,15 +778,15 @@ class StudentManagementSystem {
 					
 					
 					int no = 1;
-					for (int i = 0; i < regNoArray.length; i++)
+					for (int i = 0; i < sortedStudentsArray.length; i++)
 					{
-						index = findIndexInArray(regNoArray, sortedRegNoArray[i]);
+						//index = findIndexInArray(regNoArray, sortedRegNoArray[i]);
 						
-						String spliteBatchName = regNoArray[index].substring(4,7);
+						String spliteBatchName = sortedStudentsArray[i].getRegId().substring(4,7);
 						int batchNameInt = Integer.parseInt(spliteBatchName);
 						if(batchNameInt == batchName){
 							//int batchIndex = findIndexInArray(regNoArray,regNoArray[i]);
-							System.out.printf("%-10d %-25s %-25s %-20s %-20d %-20d %-20.1f%n",no++,regNoArray[index],nameArray[index],nicArray[index],prfArray[index],dbmsArray[index],calculateGPA(dbmsArray[index],prfArray[index]));
+							System.out.printf("%-10d %-25s %-25s %-20s %-20d %-20d %-20.1f%n",no++,sortedStudentsArray[i].getRegId(),sortedStudentsArray[i].getName(),sortedStudentsArray[i].getNic(),sortedStudentsArray[i].getPrfMarks(),sortedStudentsArray[i].getDbmsMarks(),calculateGPA(sortedStudentsArray[i].getDbmsMarks(),sortedStudentsArray[i].getPrfMarks()));
 						}
 					}
 					
@@ -950,7 +808,7 @@ class StudentManagementSystem {
 		boolean isContinue = false;
 		//int index = 0;
 		
-		System.out.println(Arrays.toString(sortedNameArray));
+		//System.out.println(Arrays.toString(sortedNameArray));
 		
 		String line = "---------------------------------------------------------------------------------------------------------------------------------------------------";
 		do{
@@ -964,12 +822,12 @@ class StudentManagementSystem {
 			System.out.println(line);
 			
 			int no = 1;
-			for (int i = 0; i < sortedRegNoArray.length; i++)
+			for (int i = 0; i < sortedStudentsArray.length; i++)
 			{
 				//index = findIndexInArray(regNoArray,sortedRegNoArray[i]);
 				
-				if(calculateGPA(dbmsArray[i],prfArray[i]) > 3.25 && prfArray[i] > 50 && dbmsArray[i] > 50){
-					System.out.printf("%-10d %-25s %-25s %-20s %-20d %-20d %-20.1f%n",no++,regNoArray[i],nameArray[i],nicArray[i],prfArray[i],dbmsArray[i],calculateGPA(dbmsArray[i],prfArray[i]));
+				if(calculateGPA(sortedStudentsArray[i].getDbmsMarks(),sortedStudentsArray[i].getPrfMarks()) > 3.25 && sortedStudentsArray[i].getPrfMarks() > 50 && sortedStudentsArray[i].getDbmsMarks() > 50){
+					System.out.printf("%-10d %-25s %-25s %-20s %-20d %-20d %-20.1f%n",no++,sortedStudentsArray[i].getRegId(),sortedStudentsArray[i].getName(),sortedStudentsArray[i].getNic(),sortedStudentsArray[i].getPrfMarks(),sortedStudentsArray[i].getDbmsMarks(),calculateGPA(sortedStudentsArray[i].getDbmsMarks(),sortedStudentsArray[i].getPrfMarks()));
 					//System.out.println(regNoArray[index] +" "+ nameArray[index]+" "+nicArray[index]);
 				}
 			}
@@ -991,6 +849,19 @@ class StudentManagementSystem {
 	}
     
     // find index in array of given value
+    public static int findIndexInArray(Student[] objArray, String value,char type){
+		int index = -1;
+		for (int i = 0; i < objArray.length; i++)
+		{
+			if(type == 'n'){
+				if(objArray[i].getNic().equals(value)) index = i;
+			}else if(type == 'r'){
+				if(objArray[i].getRegId().equals(value)) index = i;
+			}
+		}
+		return index;
+	}
+    
     public static int findIndexInArray(int[] array, int value){
 		int index = -1;
 		for (int i = 0; i < array.length; i++)
@@ -1009,6 +880,7 @@ class StudentManagementSystem {
 	}
 	
 	// find value in arrya of given index
+	
 	public static int findValueInArray(int[] array, int index){
 		if(index >= 0 && index < array.length) return array[index];
 		else return -1;
@@ -1022,13 +894,20 @@ class StudentManagementSystem {
 	// find number of student in each batch
     public static int findNumberOfStudent(int num){
 		int count = 0;
-		for (int i = 0; i < regNoArray.length; i++)
+		/*for (int i = 0; i < regNoArray.length; i++)
 		{
 			String batchNoStr = regNoArray[i].substring(4,7);
 			int batchNum = Integer.parseInt(batchNoStr);
 			if(batchNum == num) count++;
 			
+		} */
+		
+		for(Student s : studentsArray){
+			String batchNoStr = s.getRegId().substring(4,7);
+			int batchNum = Integer.parseInt(batchNoStr);
+			if(batchNum == num) count++;
 		}
+		
 		return count;
 		
 	}
@@ -1070,6 +949,16 @@ class StudentManagementSystem {
 	}
 	
 	// shrink array
+	public static Student[] shrinkArray(Student[] objArray, int index){
+		Student[] tempObjArray = new Student[objArray.length - 1];
+		for (int i = 0,j = 0; i < objArray.length; i++)
+		{
+			if(i != index) tempObjArray[j++] = objArray[i];
+		}
+		return tempObjArray;
+		
+	}
+	
 	public static int[] shrinkArray(int[] array, int index){
 		int[] tempArray = new int[array.length - 1 ];
 		for (int i = 0,j= 0; i < array.length; i++)
@@ -1155,30 +1044,23 @@ class StudentManagementSystem {
     }
 	
 	
-	public static void sortArrayAscending(String[] array, String[] sortedArray){
-		String[] originalArray = Arrays.copyOf(array, array.length);
-        String[] originalRegNoArray = Arrays.copyOf(regNoArray, regNoArray.length);
-
-        for (int i = 0; i < array.length - 1; i++) {
-            for (int j = 0; j < array.length - 1; j++) {
-                if (array[j].compareTo(array[j + 1]) > 0) {
-                    String temp = array[j];
-                    array[j] = array[j + 1];
-                    array[j + 1] = temp;
-
-                    String temp2 = regNoArray[j];
-                    regNoArray[j] = regNoArray[j + 1];
-                    regNoArray[j + 1] = temp2;
+	
+	public static void sortArrayAscending(){
+		Student[] originalArray = Arrays.copyOf(studentsArray, studentsArray.length);
+		for (int i = 0; i < studentsArray.length - 1; i++)
+		{
+			for (int j = 0; j < studentsArray.length - 1; j++) {
+                if (studentsArray[j].getName().compareTo(studentsArray[j + 1].getName()) > 0) {
+                    Student temp = studentsArray[j];
+                    studentsArray[j] = studentsArray[j + 1];
+                    studentsArray[j + 1] = temp;
                 }
             }
-        }
-
-        sortedArray = Arrays.copyOf(array, array.length);
-        sortedRegNoArray = Arrays.copyOf(regNoArray, regNoArray.length);
-
-        nameArray = Arrays.copyOf(originalArray, originalArray.length);
-        regNoArray = Arrays.copyOf(originalRegNoArray, originalRegNoArray.length);
-
+			
+		}
+		sortedStudentsArray = Arrays.copyOf(studentsArray, studentsArray.length);
+		studentsArray = Arrays.copyOf(originalArray, originalArray.length);
+		
 	}
     
     //draw asscii box

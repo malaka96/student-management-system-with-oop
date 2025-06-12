@@ -6,7 +6,7 @@ class Student{
 	private int prfMarks;
 	private int dbmsMarks;
 	
-	Student(String regId, String nic, String name, int prfdMarks, int dbmsMarks){
+	Student(String regId, String nic, String name, int prfMarks, int dbmsMarks){
 		this.regId = regId;
 		this.nic = nic;
 		this.name = name;
