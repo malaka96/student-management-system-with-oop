@@ -654,11 +654,7 @@ class UpdateStudent extends JPanel{
 			public void actionPerformed(ActionEvent evt){
 				
 				String regNoStr = regNoTf.getText();
-				try {
-					StudentManagementSystem.viewStudentProfile(regNoStr);
-				} catch (IOException e) {
-					JOptionPane.showMessageDialog(null, "Something went wrong while reading the file.");
-				}
+				StudentManagementSystem.viewStudentProfile(regNoStr);
 				if(regNoStr != null && !regNoStr.isBlank()){
 					if(!hasRegNoError){
 						nameTf.setText(recivedData[0]);
@@ -1362,18 +1358,69 @@ class StudentManagementSystem {
     public static final int ENROLLMENTCLOSED = 0;
 
     // Batch data
-    static int[] batchNameArray = { 105, 106, 107, 108, 109, 110 };
-    static int[] batchStatusArray = { 0, 0, 0, 0, 1, 1 };
+    static int[] batchNameArray = {};
+    static int[] batchStatusArray = {};
     static int[] batchStudentCountArray = { 25, 25, 25, 25, 25, 25 };
     
     // student object array
-    static Student[] studentsArray = {
-		new Student("PR24110001","20402443","Nirmal",97,89),
-	};
+    static Student[] studentsArray = {};
 	
 	static Student[] sortedStudentsArray = {};
     
-   
+    // this method use to load data from computer local file to program's arrays
+	public static void loadData(){
+		try{
+			Scanner scannerForStudent = new Scanner(new File("student_data_set.txt"));
+			while(scannerForStudent.hasNext()){
+				String line = scannerForStudent.nextLine();
+				String[] data = line.split(",");
+				Student studentData = new Student(data[0],data[1],data[2],Integer.parseInt(data[3]),Integer.parseInt(data[4]));
+				studentsArray = extendArray(studentsArray,studentData);
+			}
+			
+			Scanner scannerForBatch = new Scanner(new File("batch_details.txt"));
+			while(scannerForBatch.hasNext()){
+				String line = scannerForBatch.nextLine();
+				String[] batchData = line.split(",");
+				batchNameArray = extendArray(batchNameArray,Integer.parseInt(batchData[0]));
+				batchStatusArray = extendArray(batchStatusArray,Integer.parseInt(batchData[1]));
+			}
+		}catch(IOException e){
+			
+		}
+	}
+	
+	public static void saveData(){
+		try{
+			clearFile();
+			FileWriter fw1 = new FileWriter("student_data_set.txt",true);
+			for (int i = 0; i < studentsArray.length; i++)
+			{
+				fw1.write(studentsArray[i]+"\n");
+			}
+			fw1.close();
+			
+			FileWriter fw2 = new FileWriter("batch_details.txt");
+			for (int i = 0; i < batchNameArray.length; i++)
+			{
+				String data = String.valueOf(batchNameArray[i]+","+batchStatusArray[i]);
+				fw2.write(data+"\n");
+			}
+			fw2.close();
+		}catch(IOException e){
+			//
+		}
+	}
+	
+	public static void clearFile(){
+		try{
+			FileWriter fw = new FileWriter("student_data_set.txt",false);
+			fw.write("");
+			fw.close();
+		}catch(IOException e){
+			//
+		}
+	}
 
     // console clear
     public final static void clearConsole() {
@@ -1655,19 +1702,10 @@ class StudentManagementSystem {
 						for(Student ns : studentsArray){
 							System.out.println(ns.getName() + " before");
 						}
-						
-						try{
-							FileWriter fw = new FileWriter("student_data_set.txt",true);
-							fw.write(student+"\n");
-							
-							fw.close();
-							
-							student = null;
-							for(Student ns : studentsArray){
+						studentsArray = extendArray(studentsArray, student);
+						student = null;
+						for(Student ns : studentsArray){
 							System.out.println(ns.getName()+ " after");
-							}
-						}catch(IOException ev){
-							//
 						}
 						
 						//nicArray = extendArray(nicArray,nic);
@@ -1682,6 +1720,10 @@ class StudentManagementSystem {
 						AddStudent.setNicError(false);
 						AddStudent.setBatchError(false);
 						System.out.println("Student was successfully added to the system.");
+						
+						// save data to computer loca file
+						saveData();
+						
 						//if(isInvalidOption('t',"\tStudent was successfully added to the system.\nDo you want to add another student (Y/N) : "))clearConsole();
 						//else {isContinue = false; clearConsole();}
 						
@@ -1763,6 +1805,9 @@ class StudentManagementSystem {
 				studentsArray[regNoIndex].setName(nameFromSwing);
 				studentsArray[regNoIndex].setNic(nicFromSwing);
 				
+				// save data to computer loca file
+				saveData();
+				
 				//String passingPrf = String.valueOf(studentsArray[regNoIndex].getPrfMarks());
 				//String passingDbms = String.valueOf(studentsArray[regNoIndex].getDbmsMarks());
 				//String passingGpa = String.valueOf(calculateGPA(studentsArray[regNoIndex].getDbmsMarks(),studentsArray[regNoIndex].getPrfMarks()));
@@ -1779,10 +1824,8 @@ class StudentManagementSystem {
 	}
 	
 	// view student profile
-	public static void viewStudentProfile(String regNoFromSwing)throws IOException{
-		//Scanner scanner = new Scanner(System.in);
-		
-		Scanner scanner = new Scanner(new File("student_data_set.txt"));
+	public static void viewStudentProfile(String regNoFromSwing){
+		Scanner scanner = new Scanner(System.in);
 		boolean isContinue = false;
 		//do{
 			isContinue = true;
@@ -1802,12 +1845,6 @@ class StudentManagementSystem {
 				
 				if(isInvalidOption('t',"Do you want to search another student details (Y/N) : "))clearConsole();
 				else {isContinue = false; clearConsole();} */
-				
-				while(scanner.hasNext()){
-					String[] data = line.split(",");
-					System.out.println(data[2]);
-				}
-				
 				String passingPrf = String.valueOf(studentsArray[regNoIndex].getPrfMarks());
 				String passingDbms = String.valueOf(studentsArray[regNoIndex].getDbmsMarks());
 				String passingGpa = String.valueOf(calculateGPA(studentsArray[regNoIndex].getDbmsMarks(),studentsArray[regNoIndex].getPrfMarks()));
@@ -1852,6 +1889,9 @@ class StudentManagementSystem {
 					dbmsArray = shrinkArray(dbmsArray,regNoIndex); */
 					
 					studentsArray = shrinkArray(studentsArray, regNoIndex);
+					
+					// save data to computer loca file
+					saveData();
 					
 					//if(isInvalidOption('t',"\tStudent was successfully deleted from the system.\nDo you want to delete another student profile (Y/N) : ")) clearConsole();
 					//else {isContinue = false; clearConsole();}
@@ -1901,6 +1941,9 @@ class StudentManagementSystem {
 					batchNameArray = extendArray(batchNameArray,batchNum);
 					batchStatusArray = extendArray(batchStatusArray,1);
 					
+					//save data in computer local file
+					saveData();
+					
 					//if(isInvalidOption('t',"\tBatch was successfully added to the system.\nDo you want to add another batch to system (Y/N): ")) clearConsole();
 					//else {isContinue = false; clearConsole();}
 					
@@ -1936,6 +1979,7 @@ class StudentManagementSystem {
 				//}else {isContinue = false; clearConsole();}
 				UpdateBatch.setBatchStatus(findValueInArray(batchStatusArray,batchIndex));
 				
+				
 			}else{
 				//if(isInvalidOption('t',"\tThis batch does not exist in the system.\nDo you want to enter batch again (Y/N) : ")) clearConsole();
 				//else {isContinue = false; clearConsole();}
@@ -1950,6 +1994,9 @@ class StudentManagementSystem {
 			
 		int batchIndex = findIndexInArray(batchNameArray,batchNum);
 		updateArrayValue(batchStatusArray,batchIndex,batchStatus);
+		
+		//save data in computer local file
+		saveData();
 	}
 	
 	// view batches
@@ -2085,6 +2132,10 @@ class StudentManagementSystem {
 				} */
 				studentsArray[regNoIndex].setDbmsMarks(dbmsMarksFromSwing);
 				studentsArray[regNoIndex].setPrfMarks(prfMarksFromSwing);
+				
+				// save data to computer loca file
+				saveData();
+				
 			}else{
 				if(isInvalidOption('t',"\tThis student not exist in the system.\nDo you want to enter again (Y/N) : ")) clearConsole();
 				else {isContinue = false; clearConsole();}
@@ -2477,6 +2528,10 @@ class StudentManagementSystem {
 		JPanel p = new JPanel(c1);
 		
 		//addStudent s = new addStudent(c1,p);
+		
+		// loads data from computer local files
+		loadData();
+		
 		
 		p.add(new HomePage(c1,p),"homepage");
 		p.add(new StudentManagement(c1,p), "smPage");
