@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.table.*;
+import java.io.*;
 
 class Student{
 	private String regId;
@@ -25,6 +26,10 @@ class Student{
 	void setName(String name){this.name = name;}
 	void setPrfMarks(int prfMarks){this.prfMarks = prfMarks;}
 	void setDbmsMarks(int dbmsMarks){this.dbmsMarks = dbmsMarks;}
+	
+	public String toString(){
+		return regId+","+nic+","+name+","+String.valueOf(prfMarks)+","+String.valueOf(dbmsMarks);
+	}
 	
 	String getRegId(){return this.regId;}
 	String getNic(){return this.nic;}
@@ -649,7 +654,11 @@ class UpdateStudent extends JPanel{
 			public void actionPerformed(ActionEvent evt){
 				
 				String regNoStr = regNoTf.getText();
-				StudentManagementSystem.viewStudentProfile(regNoStr);
+				try {
+					StudentManagementSystem.viewStudentProfile(regNoStr);
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(null, "Something went wrong while reading the file.");
+				}
 				if(regNoStr != null && !regNoStr.isBlank()){
 					if(!hasRegNoError){
 						nameTf.setText(recivedData[0]);
@@ -1646,10 +1655,19 @@ class StudentManagementSystem {
 						for(Student ns : studentsArray){
 							System.out.println(ns.getName() + " before");
 						}
-						studentsArray = extendArray(studentsArray, student);
-						student = null;
-						for(Student ns : studentsArray){
+						
+						try{
+							FileWriter fw = new FileWriter("student_data_set.txt",true);
+							fw.write(student+"\n");
+							
+							fw.close();
+							
+							student = null;
+							for(Student ns : studentsArray){
 							System.out.println(ns.getName()+ " after");
+							}
+						}catch(IOException ev){
+							//
 						}
 						
 						//nicArray = extendArray(nicArray,nic);
@@ -1761,8 +1779,10 @@ class StudentManagementSystem {
 	}
 	
 	// view student profile
-	public static void viewStudentProfile(String regNoFromSwing){
-		Scanner scanner = new Scanner(System.in);
+	public static void viewStudentProfile(String regNoFromSwing)throws IOException{
+		//Scanner scanner = new Scanner(System.in);
+		
+		Scanner scanner = new Scanner(new File("student_data_set.txt"));
 		boolean isContinue = false;
 		//do{
 			isContinue = true;
@@ -1782,6 +1802,12 @@ class StudentManagementSystem {
 				
 				if(isInvalidOption('t',"Do you want to search another student details (Y/N) : "))clearConsole();
 				else {isContinue = false; clearConsole();} */
+				
+				while(scanner.hasNext()){
+					String[] data = line.split(",");
+					System.out.println(data[2]);
+				}
+				
 				String passingPrf = String.valueOf(studentsArray[regNoIndex].getPrfMarks());
 				String passingDbms = String.valueOf(studentsArray[regNoIndex].getDbmsMarks());
 				String passingGpa = String.valueOf(calculateGPA(studentsArray[regNoIndex].getDbmsMarks(),studentsArray[regNoIndex].getPrfMarks()));
