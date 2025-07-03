@@ -428,10 +428,15 @@ class AddStudent extends JPanel {
     static String regNo = "";
 
     public static void setBatchArray(int[] ar) {
+        try {
         batchModel.removeAllElements();
         for (int value : ar) {
             batchModel.addElement(value);
         }
+    } catch (Exception e) {
+        System.out.println("Error while setting batch array: " + e.getMessage());
+        e.printStackTrace(); 
+    }
     }
 
     public static void setBatchError(boolean newState) { hasBatchError = newState; }
@@ -525,8 +530,12 @@ class AddStudent extends JPanel {
             layout.show(parentPanel, "smPage");
             nicTf.setText("");
             nameTf.setText("");
+            try{
             dropdown.setSelectedIndex(0);
             dropdownLecMode.setSelectedIndex(0);
+		}catch(Exception ea){
+			
+		}
             regNo = null;
         });
 
@@ -1370,6 +1379,10 @@ class StudentManagementSystem {
     // this method use to load data from computer local file to program's arrays
 	public static void loadData(){
 		try{
+			
+			File studentDataFile = new File("student_data_set.txt");
+			if(!studentDataFile.exists())studentDataFile.createNewFile();
+			
 			Scanner scannerForStudent = new Scanner(new File("student_data_set.txt"));
 			while(scannerForStudent.hasNext()){
 				String line = scannerForStudent.nextLine();
@@ -1377,6 +1390,9 @@ class StudentManagementSystem {
 				Student studentData = new Student(data[0],data[1],data[2],Integer.parseInt(data[3]),Integer.parseInt(data[4]));
 				studentsArray = extendArray(studentsArray,studentData);
 			}
+			
+			File batchDataFile = new File("batch_details.txt");
+			if(!batchDataFile.exists()) batchDataFile.createNewFile();
 			
 			Scanner scannerForBatch = new Scanner(new File("batch_details.txt"));
 			while(scannerForBatch.hasNext()){
@@ -1386,7 +1402,7 @@ class StudentManagementSystem {
 				batchStatusArray = extendArray(batchStatusArray,Integer.parseInt(batchData[1]));
 			}
 		}catch(IOException e){
-			
+			System.out.println("file is not found");
 		}
 	}
 	
